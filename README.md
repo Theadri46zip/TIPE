@@ -1,9 +1,10 @@
 Programmes faits : 
--calculer le nbr de brins d'un mot
 
--Fonction utiles pour matrices (mat nulles, ajout, lecture dans la console)
+- Calculer le nbr de brins d'un mot
 
--Mot vers Matrice
+- Fonction utiles pour matrices (mat nulles, ajout, lecture dans la console)
+
+- Mot vers Matrice
 
 A faire:
 
