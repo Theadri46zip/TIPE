@@ -1,10 +1,8 @@
 from copy import deepcopy
 
 
-exemple1=[[1,-1],[2,1],[1,1],[2,1]]
-
-exemple2=[[2,1],[1,1],[1,1],[2,-1],[1,1],[1,-1]]
-
+e1=[[1,-1],[2,1],[1,1],[2,1]]
+e2=[[2,1],[1,1],[1,1],[2,-1],[1,1],[1,-1]]
 
 def nbr_brins(t):
     return max([t[i][0] for i in range(len(t))]) + 1
@@ -94,11 +92,48 @@ def mot_tomat(t):
     print("état final :")
     lect_mat(mf)
 
+"""
+3 propriétés :
+- [ i,1] suivi de [i,-1] se simplifie en l'inaction
+- [i,1] suivi de [j,1] vaut [j,1] suivi de [i,1] si en valeur abs i-j >=2
+- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
+"""
 
-def simplify(t):
-    for etat in t:
-        print(etat)
-       
+def suppr_av(t,n): # n le nombre d'éléments a enlever de la tete du mot
+    t1=deepcopy(t)
+    t2=[]
+    for i in range(n,len(t)):
+        t2.append(t1[i])
+    return t2
+
+def simplify(t):   #t le mot, n la complexité de la simplification ?
+    mot1=deepcopy(t)
+    mot2=[]
+    #CONDITION D'ARRET
+    if t==[]:
+        return []
+    else:
+    
+        for j in range(len(t)):
+            t1=mot1[j][0]
+            s1=mot1[j][1]
+            t2=mot1[j+1][0]
+            s2=mot1[j+1][1]
+            t3=mot1[j+2][0]
+            s3=mot1[j+2][1]       
+            if t1 == t2 and s1 == -s2 :
+                mot2=suppr_av(mot1,2)
+                return simplify(mot2)
+
+            if t1 == t3 and s1 == -s3:
+                if abs((t1-t2))>=2:
+                    mot1[j],mot1[j+1] = mot1[j+1],mot1[j]
+
+        
+        
+        
                 
+        
+       
                 
         
