@@ -94,7 +94,10 @@ def mot_tomat(t):
     print("état final :")
     lect_mat(mf)
 
-    
+
+def simplify(t):
+    for etat in t:
+        print(etat)
        
                 
                 
