@@ -13,3 +13,5 @@ A faire:
 - Optimiser les mots ? voir pdf cours
 
 Penser a la crypto
+
+je deteste artemis
