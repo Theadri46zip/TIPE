@@ -7,14 +7,8 @@ e2=[[2,1],[1,1],[1,1],[2,-1],[1,1],[1,-1]]
 def nbr_brins(t):
     return max([t[i][0] for i in range(len(t))]) + 1
 
-def list_zero(n):
-    M=[]
-    for i in range(n):
-        M.append(0)
-    return M
-
 def matcar_zero(n):
-    return [list_zero(n) for i in range(n)]
+    return [[0 for i in range(n)] for i in range(n)]
     
 def lect_mat(m):
     if m==[]:
@@ -25,34 +19,18 @@ def lect_mat(m):
 
 """
 ne marche que si il y a 3 brins
-"""
+"""   
 
-def ajout_diago(m1,m2):
+def ajout2mat(m1,m2):
     if len(m1)!= len(m2):
         return "matrices de tailles différentes"
     else:
         n=len(m1)
-        m0=matcar_zero(n)
-        for i in range(n):
-            print(m1[i][i],m2[i][i])
-            m0[i][i]=m1[i][i] + m2[i][i]
-        return m0
-
-def ajout_matrices(m1,m2):
-    if len(m1)!= len(m2):
-        return "matrices de tailles différentes"
-    else:
-        n=len(m1)
-        m0=matcar_zero(n)
-        for i in range(n):
-            for j in range(n):
-                m0[i][j]=m1[i][j] + m2[i][j]
-        return m0
+        return [[ m1[i][j]+m2[i][j] for j in range(n)] for i in range(n)]
                 
 def mot_tomat(t):
     n=nbr_brins(t)
     m0=matcar_zero(n)   #Etat 0 matrice nulle
-    mf=matcar_zero(n)   #On va calculer l'état final a partir des intermédiaires
     lmat=[m0]           # On ajoute l'état 0 a la liste des états
     etat=0
     mpre=matcar_zero(n)
@@ -69,7 +47,7 @@ def mot_tomat(t):
         j2=l_etatnow[j]-1
         m1[j1][j1]=1   
         m1[j2][j2]=-1        
-        l_etatnow[j1],l_etatnow[j2]=l_etatnow[j2],l_etatnow[j1]
+        l_etatnow[j],l_etatnow[j-1]=l_etatnow[j-1],l_etatnow[j]
         l_etats.append(l_etatnow)
         if sig ==1:
             m1[j1][j2]=-1
@@ -78,11 +56,12 @@ def mot_tomat(t):
             m1[j1][j2]=1
             m1[j2][j1]=-1
         lmat.append(m1)
-        mf = ajout_matrices(m1,mpre)
-        mpre=deepcopy(m1)
         etat+=1
+    mf=matcar_zero(n)
+    for i in range(len(lmat)):
+        mf=ajout2mat(mf,lmat[i])
         
-
+    
     for i in range(len(lmat)):
         print("état",i)
         lect_mat(lmat[i])
