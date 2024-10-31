@@ -6,7 +6,7 @@ Programmes faits :
 
 - Mot vers Matrice
 
-- + proche inverse
+- plus proche inverse
 
 A faire:
 
