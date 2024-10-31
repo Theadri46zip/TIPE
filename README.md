@@ -6,6 +6,8 @@ Programmes faits :
 
 - Mot vers Matrice
 
+- -+ proche inverse
+
 A faire:
 
 -Matrice vers mot ?
@@ -14,4 +16,4 @@ A faire:
 
 Penser a la crypto
 
-je deteste artemis
+
