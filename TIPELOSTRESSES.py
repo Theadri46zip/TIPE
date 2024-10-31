@@ -85,6 +85,25 @@ def suppr_av(t,n): # n le nombre d'éléments a enlever de la tete du mot
         t2.append(t1[i])
     return t2
 
+def proche_inverse(t,etat): # etat=[i,sig] compose le mot t
+    i=etat[0]
+    sig=etat[1]
+    c=[i,-sig] # On cherche, si il existe, sa distance à [i,sig]
+    ind1=t.index(etat)
+    ind2=0
+    if c not in t:
+        return 0
+    else:
+        for j in range(len(t)):
+            if t[j]==c :
+                ind2=j
+        return ind2-ind1
+
+"""
+dans la suite le but sera donc de faire en sorte que proche inverse = 1 ou -1 pour pouvoir supprimer deux états inutiles si possible
+"""
+
+
 def simplify(t):   #t le mot, n la complexité de la simplification ?
     mot1=deepcopy(t)
     mot2=[]
