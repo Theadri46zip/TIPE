@@ -126,8 +126,7 @@ def simplify(t):   #t le mot, n la complexité de la simplification ?
             if t1 == t3 and s1 == -s3:
                 if abs((t1-t2))>=2:
                     mot1[j],mot1[j+1] = mot1[j+1],mot1[j]
-
-        
+#COMPLETER LE PROGRAMME QUAND J'AI UNE PISTE
         
         
                 
