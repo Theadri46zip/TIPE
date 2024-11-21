@@ -98,7 +98,43 @@ def proche_inverse(t,etat): # etat=[i,sig] compose le mot t
             if t[j]==c :
                 ind2=j
         return ind2-ind1
+    
 
+
+"""
+On créée d'abord une fonction qui détermine si le mot est simplifiable ou non
+Ce sera la condition d'arret
+"""
+
+def simplifiable(t):
+    #On ne va pas plus loin si tout les caractères n'ont pas d'inverse
+    simpli=False
+    for i in t:
+        if proche_inverse(t,i)>0:
+            simpli=True
+    if not simpli:
+        return False
+    else:
+        for i in t:
+            pos=t.index(i)
+            if abs(proche_inverse(t,i))==1:
+                return True
+            
+            if abs(proche_inverse(t,i))
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 """
 dans la suite le but sera donc de faire en sorte que proche inverse = 1 ou -1 pour pouvoir supprimer deux états inutiles si possible
 """
