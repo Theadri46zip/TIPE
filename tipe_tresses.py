@@ -127,7 +127,7 @@ def proche_inverse(t,sigma) -> int:
 
 """
 def simplifiable(t):
-    #On ne va pas plus loin si tout les caractères n'ont pas d'inverse
+    #On ne va pas plus loin si tous les caractères n'ont pas d'inverse
     simpli=False
     for i in t:
         if proche_inverse(t,i)>0:
