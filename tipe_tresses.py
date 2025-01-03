@@ -1,4 +1,4 @@
-"""Toolkit matriciel pour codage de tresse."""
+"""Toolkit matriciel pour codage de tresses."""
 from copy import deepcopy
 
 # sigma1-1, sigma2, sigma1, sigma2
