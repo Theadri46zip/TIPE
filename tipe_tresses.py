@@ -2,14 +2,14 @@
 from copy import deepcopy
 
 # sigma1-1, sigma2, sigma1, sigma2
-EXEMPLE_1: list[list] =[
+EXEMPLE_1: list[list] = [
     [1,-1],
     [2,1],
     [1,1],
     [2,1]
 ]
 # sigma2, sigma1, sigma1, sigma2-1, sigma1, sigma1-1
-EXEMPLE_2: list[list]=[
+EXEMPLE_2: list[list] = [
     [2,1],
     [1,1],
     [1,1],
@@ -28,13 +28,13 @@ def matcar_zero(n):
     return [[0 for i in range(n)] for i in range(n)]
 
 
-def lect_mat(m):
+def print_mat(m):
     """Affichage d'une liste de liste en mode matrice."""
     if m==[]:
         print(" ")
     else:
-        for i in range(len(m[0])):
-            print(m[i])
+        for _, line in enumerate(m):
+            print(line)
 
 
 def ajout2mat(m1, m2):
@@ -51,43 +51,44 @@ def mot2mat(t):
     """
     n=nbr_brins(t)
     m0=matcar_zero(n)   #Etat 0 matrice nulle
-    lmat=[m0]           # On ajoute l'état 0 a la liste des états
-    etat=0
+    l_mat=[m0]           # On ajoute le matrice 0 a la liste des matrices
+    nb_etat_courant=0
     #la liste des noeuds dans l'ordre de priorité gauche -> droite
     l_etats=[
         list(i for i in range(1,n+1))
     ]
     for i in range(len(t)):
-        l_etatnow=deepcopy(l_etats[etat])
+        l_etat_now=deepcopy(l_etats[nb_etat_courant])
         m1 = matcar_zero(n)
-        t_et = t[etat]    #l'élément d'indice état nous renseigne sur les modifs a faire
+        #l'élément d'indice nb_etat_courant nous renseigne sur les modifs a faire
+        t_et = t[nb_etat_courant]
         j=t_et[0]         # C'est l'indice du brin qui monte en passant en dessous du prochain
-        j1=l_etatnow[j-1]-1
-        j2=l_etatnow[j]-1
+        j1=l_etat_now[j-1]-1
+        j2=l_etat_now[j]-1
         m1[j1][j1]=1
         m1[j2][j2]=-1
-        l_etatnow[j],l_etatnow[j-1]=l_etatnow[j-1],l_etatnow[j]
-        l_etats.append(l_etatnow)
+        l_etat_now[j],l_etat_now[j-1]=l_etat_now[j-1],l_etat_now[j]
+        l_etats.append(l_etat_now)
         if t_et[1] ==1:
             m1[j1][j2]=-1
             m1[j2][j1]=1
         else:
             m1[j1][j2]=1
             m1[j2][j1]=-1
-        lmat.append(m1)
-        etat+=1
+        l_mat.append(m1)
+        nb_etat_courant+=1
     mf=matcar_zero(n)
-    for _, value in enumerate(lmat):
+    for _, value in enumerate(l_mat):
         mf=ajout2mat(mf, value)
 
-    for i, value in enumerate(lmat):
+    for i, value in enumerate(l_mat):
         print("état",i)
-        lect_mat(value)
+        print_mat(value)
         print("ordre :")
         print(l_etats[i])
         print(" ")
     print("état final :")
-    lect_mat(mf)
+    print_mat(mf)
 
 #3 propriétés :
 #- [ i,1] suivi de [i,-1] se simplifie en l'inaction
@@ -103,16 +104,18 @@ def suppr_av(t,n): # n le nombre d'éléments a enlever de la tete du mot
         t2.append(t1[i])
     return t2
 
-def proche_inverse(t,etat): # etat=[i,sig] compose le mot t
-    """Donne l'indice du plus proche inverse."""
-    i=etat[0]
-    sig=etat[1]
-    c=[i,-sig] # On cherche, si il existe, sa distance à [i,sig]
-    ind1=t.index(etat)
+def proche_inverse(t,sigma) -> int:
+    """Identifie le plus proche inverse du générateur sigma.
+    Renvoie la distance entre sigma et cet inverse
+    sigma=[i,sig] est un élément du mot t
+    """
+    i=sigma[0]
+    sig=sigma[1]
+    c=[i,-sig] # si l'inverse existe, on cherche sa distance à [i,sig]
+    ind1=t.index(sigma)
     ind2=0
     if c not in t:
         return 0
-    #for j in range(len(t)):
     for j, value in enumerate(t):
         if value==c :
             ind2=j
@@ -150,6 +153,7 @@ pour pouvoir supprimer deux états inutiles si possible
 
 
 def simplify(t):   #t le mot, n la complexité de la simplification ?
+    """Réduction de tresse."""
     mot1=deepcopy(t)
     mot2=[]
     #CONDITION D'ARRET
@@ -173,3 +177,4 @@ def simplify(t):   #t le mot, n la complexité de la simplification ?
 
 if __name__ == "__main__":
     mot2mat(EXEMPLE_1)
+    print(proche_inverse(EXEMPLE_2, [1,-1]))
