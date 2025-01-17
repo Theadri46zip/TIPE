@@ -130,10 +130,10 @@ def extract_poignee(t,g):
                 place=count
             else:
                 count+=1
-        print(place)
-        for noeud in t[(count):]:
-            if noeud != g and inverse not in l:
+        for noeud in t[(place):]:
+            if noeud != g and inverse not in l and inverse in t[place:]:
                 l.append(noeud)
+                place+=1
         return l
             
             
