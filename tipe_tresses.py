@@ -70,11 +70,11 @@ def mot2mat(t):
         l_etat_now[j],l_etat_now[j-1]=l_etat_now[j-1],l_etat_now[j]
         l_etats.append(l_etat_now)
         if t_et[1] ==1:
-            m1[j1][j2]=-1
-            m1[j2][j1]=1
-        else:
             m1[j1][j2]=1
             m1[j2][j1]=-1
+        else:
+            m1[j1][j2]=-1
+            m1[j2][j1]=1
         l_mat.append(m1)
         nb_etat_courant+=1
     mf=matcar_zero(n)
@@ -95,86 +95,50 @@ def mot2mat(t):
 #- [i,1] suivi de [j,1] vaut [j,1] suivi de [i,1] si en valeur abs i-j >=2
 #- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
 
-
-def suppr_av(t,n): # n le nombre d'éléments a enlever de la tete du mot
-    """Supprime n éléments du mot."""
-    t1=deepcopy(t)
-    t2=[]
-    for i in range(n,len(t)):
-        t2.append(t1[i])
-    return t2
-
-def proche_inverse(t,sigma) -> int:
-    """Identifie le plus proche inverse du générateur sigma.
-    Renvoie la distance entre sigma et cet inverse
-    sigma=[i,sig] est un élément du mot t
-    """
-    i=sigma[0]
-    sig=sigma[1]
-    c=[i,-sig] # si l'inverse existe, on cherche sa distance à [i,sig]
-    ind1=t.index(sigma)
-    ind2=0
-    if c not in t:
-        return 0
-    for j, value in enumerate(t):
-        if value==c :
-            ind2=j
-    return ind2-ind1
-
-
-#On créée d'abord une fonction qui détermine si le mot est simplifiable ou non
-#Ce sera la condition d'arret
-
-"""
-def simplifiable(t):
-    #On ne va pas plus loin si tous les caractères n'ont pas d'inverse
-    simpli=False
-    for i in t:
-        if proche_inverse(t,i)>0:
-            simpli=True
-    if not simpli:
+def est_poignee(t):
+    prefixe=t[0]
+    inverse=[t[0][0],-t[0][1]]
+    if prefixe in t[1:-1] or inverse in t[1:-1]:
         return False
+    return t[-1]==inverse
+
+def pos_generateur(t,g):
+    inverse=[g[0],-g[1]]
+    l=[]
+    for noeud in t:
+        if noeud==g:
+            l.append(1)
+        elif noeud==inverse:
+            l.append(-1)
+        else:
+            l.append(0)
+    return l
+
+
+def extract_poignee(t,g):
+    #tresse_bin=pos_generateur(t,g)
+    inverse=[g[0],-g[1]]
+    if inverse not in t:
+        return t
     else:
-        for i in t:
-            pos=t.index(i)
-            if abs(proche_inverse(t,i))==1:
-                return True
+        l=[]
+        count=0
+        place=0
+        for noeud in t:
+            if noeud==g and g not in l:
+                l.append(g)
+                place=count
+            else:
+                count+=1
+        print(place)
+        for noeud in t[(count):]:
+            if noeud != g and inverse not in l:
+                l.append(noeud)
+        return l
             
-            if abs(proche_inverse(t,i))
+            
 
-
-"""
-
-
-"""
-dans la suite le but sera de faire en sorte que proche inverse = 1 ou -1 
-pour pouvoir supprimer deux états inutiles si possible
-"""
-
-
-def simplify(t):   #t le mot, n la complexité de la simplification ?
-    """Réduction de tresse."""
-    mot1=deepcopy(t)
-    mot2=[]
-    #CONDITION D'ARRET
-    if t==[]:
-        return []
-    for j in range(len(t)):
-        t1=mot1[j][0]
-        s1=mot1[j][1]
-        t2=mot1[j+1][0]
-        s2=mot1[j+1][1]
-        t3=mot1[j+2][0]
-        s3=mot1[j+2][1]
-        if t1 == t2 and s1 == -s2 :
-            mot2=suppr_av(mot1,2)
-            return simplify(mot2)
-
-        if t1 == t3 and s1 == -s3:
-            if abs((t1-t2))>=2:
-                mot1[j],mot1[j+1] = mot1[j+1],mot1[j]
-#COMPLETER LE PROGRAMME QUAND J'AI UNE PISTE
 
 if __name__ == "__main__":
     mot2mat(EXEMPLE_1)
-    print(proche_inverse(EXEMPLE_2, [1,-1]))
+    print(est_poignee(EXEMPLE_2,))
