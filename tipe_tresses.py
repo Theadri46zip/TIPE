@@ -96,49 +96,54 @@ def mot2mat(t):
 #- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
 
 def est_poignee(t):
+    """
+    renvoie la valeur de l'assertion (t est une poignee)
+    """
     prefixe=t[0]
     inverse=[t[0][0],-t[0][1]]
     if prefixe in t[1:-1] or inverse in t[1:-1]:
         return False
     return t[-1]==inverse
 
-def pos_generateur(t,g):
+def est_poignee_cor(t):
+    prefixe = t[0]
+    suffixe = t[1]
+    bool_inverse = prefixe[0] == suffixe[0] and prefixe[1] == - suffixe[1]
+    return len(t) == 2 and bool_inverse
+            
+def extract2poignee(t,g):
+    """
+    renvoie la premiere poignee extraite de t ayant comme prefixe g
+    """
     inverse=[g[0],-g[1]]
-    l=[]
-    for noeud in t:
-        if noeud==g:
-            l.append(1)
-        elif noeud==inverse:
-            l.append(-1)
-        else:
-            l.append(0)
-    return l
-
-
-def extract_poignee(t,g):
-    #tresse_bin=pos_generateur(t,g)
-    inverse=[g[0],-g[1]]
-    if inverse not in t:
+    if g not in t or inverse not in t:
         return t
     else:
-        l=[]
-        count=0
-        place=0
-        for noeud in t:
-            if noeud==g and g not in l:
-                l.append(g)
-                place=count
-            else:
-                count+=1
-        for noeud in t[(place):]:
-            if noeud != g and inverse not in l and inverse in t[place:]:
-                l.append(noeud)
-                place+=1
-        return l
-            
-            
+        l=[g]
+        place = t.index(g)+1
+        if inverse not in t[(place):]:
+            return t
+        else:
+            for noeud in t[(place):]:
+                if noeud != g and inverse not in l and inverse in t[place:]:
+                    l.append(noeud)
+                    place+=1
+            return l
 
+def reduction_poignee(t):
+    """
+    renvoie la tresse sans ses extremités
+    """
+    if est_poignee(t):
+        return t[1:-1]
+    return t
 
+def simplification(t):
+    l=deepcopy(t)
+    prefixe=
+    
+"""
 if __name__ == "__main__":
     mot2mat(EXEMPLE_1)
     print(est_poignee(EXEMPLE_2,))
+"""
