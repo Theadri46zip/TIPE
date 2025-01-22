@@ -132,18 +132,37 @@ def extract2poignee(t,g):
 
 def reduction_poignee(t):
     """
-    renvoie la tresse sans ses extremités
+    renvoie la tresse sans ses extremités si c'est une poignée
     """
     if est_poignee(t):
         return t[1:-1]
     return t
 
+def position_extraite(liste, ext):
+    """
+    renvoie la position (du début) d'une liste extraite dans la liste d'origine
+    """
+
+    for i in range(len(liste) - len(ext) + 1):
+        if liste[i:i+len(ext)] == ext:
+            return i
+    raise TypeError("ext n'est pas dans la liste")
+
+
 def simplification(t):
     l=deepcopy(t)
-    prefixe=
+    prefixe=t[0]
+    poignee = extract2poignee(t,prefixe)
+    if  poignee != t:     #On peut donc extraire une poignee
+        poignee_index_deb= position_extraite(t,poignee)
+        longueur_poignee=len(poignee)
+        poignee_index_fin= poignee_index_deb + longueur_poignee -1
+        l=l[:(poignee_index_deb+1)] +l[poignee_index_deb: poignee_index_fin] +l[(poignee_index_fin+1):]
+    return l
+
     
-"""
+
 if __name__ == "__main__":
-    mot2mat(EXEMPLE_1)
-    print(est_poignee(EXEMPLE_2,))
-"""
+    #mot2mat(EXEMPLE_1)
+    print(simplification(EXEMPLE_1))
+
