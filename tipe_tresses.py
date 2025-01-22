@@ -130,13 +130,39 @@ def extract2poignee(t,g):
                     place+=1
             return l
 
+def num_generateurs(t,g):
+    """
+    renvoie le nombre de générateurs g et inverses g**-1 dans t
+    """
+    compteur=0
+    inverse=[g[0],-g[1]]
+    for sigma in t:
+        if sigma == g or sigma == inverse:
+            compteur+=1
+    return compteur
+
 def reduction_poignee(t):
     """
-    renvoie la tresse sans ses extremités si c'est une poignée
+    Si c'est une poignee alors on la réduit
+    on commence par enlever ses extremités puis on remplace si besoin le reste des generateurs par
+    leur forme réduite
     """
     if est_poignee(t):
-        return t[1:-1]
-    return t
+        prefixe = t[0]
+        sig_prefixe=prefixe[1]
+        m=prefixe[0]
+        voisin = [m+1,sig_prefixe] #Les générateurs a modifier
+        inverse= [m+1,-sig_prefixe]   #Aussi a modifier si on les rencontre
+        l = t[1:-1]
+        t2=[]
+        for [indice,signature] in l:
+            if indice != m+1:
+                t2.append([indice,signature])
+            else:
+                t2.append([indice,-sig_prefixe])
+                t2.append([m,signature])
+                t2.append([indice,sig_prefixe])
+        return t2
 
 def position_extraite(liste, ext):
     """
@@ -164,5 +190,5 @@ def simplification(t):
 
 if __name__ == "__main__":
     #mot2mat(EXEMPLE_1)
-    print(simplification(EXEMPLE_1))
+    print(reduction_poignee([[1,-1],[2,1],[1,1]]))
 
