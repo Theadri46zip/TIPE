@@ -1,4 +1,4 @@
-Programmes faits : 
+# Programmes faits : 
 
 - Calculer le nbr de brins d'un mot
 
@@ -8,12 +8,10 @@ Programmes faits :
 
 - plus proche inverse
 
-A faire:
+- Optimiser les mots + bcp de fonctions auxiliaires
 
--Matrice vers mot ?
+# A faire:
 
-- Optimiser les mots ? voir pdf cours
+- Diffie Hellman
 
-Penser a la crypto
-
-
+ 
