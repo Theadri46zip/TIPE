@@ -1,5 +1,11 @@
 """Toolkit matriciel pour codage de tresses."""
 from copy import deepcopy
+import logging
+FORMAT = '%(asctime)s - %(funcName)s - %(lineno)d - %(levelname)s - %(message)s'
+logging.basicConfig(format=FORMAT)
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+
 
 # sigma1-1, sigma2, sigma1, sigma2
 EXEMPLE_1: list[list] = [
@@ -151,20 +157,20 @@ def reduction_poignee(t:list[list]):
     leur forme réduite
     """
     if est_poignee(t):
-        prefixe = t[0]
-        sig_prefixe=prefixe[1]
-        m=prefixe[0]
+        prefix = t[0]
+        sig_prefix = prefix[1]
+        ind_prefix = prefix[0] # m dans le livre
         l = t[1:-1]
-        t2=[]
-        for [indice,signature] in l:
-            if indice != m+1:
-                t2.append([indice,signature])
-            elif indice == m+1:
-                t2.append([indice,-sig_prefixe])
-                t2.append([m,signature])
-                t2.append([indice,sig_prefixe])
+        t2 = []
+        for [ind, sig] in l:
+            if ind != ind_prefix+1:
+                t2.append([ind, sig])
+            elif ind == ind_prefix+1:
+                t2.append([ind, -sig_prefix])
+                t2.append([ind_prefix, sig])
+                t2.append([ind, sig_prefix])
             else:
-                t2.append([indice,signature])
+                t2.append([ind, sig])
         return t2
     return t
 
@@ -210,23 +216,16 @@ def double_simplification(t:list[list]):
     """
     on effectue boucle simple puis on va chercher une poignee a réduire
     """
-    t2=boucle_redsimp(t)
+    t2 = boucle_redsimp(t)
+    LOGGER.debug(t2)
     if est_poignee(t2):
-        t2=reduction_poignee(t2)
+        t2 = reduction_poignee(t2)
+    else:
+        indice = 0
+        while (poignee:=extract2poignee(t2, t2[indice])) == t2:
+            indice += 1
+        debut = position_extraite(t2, poignee)
+        fin = debut + len(poignee)
+        t2 = t2[:debut] + reduction_poignee(poignee) + t2[fin:]
+    t2 = boucle_redsimp(t2)
     return t2
-
-"""
-def simplification(t):
-    l=deepcopy(t)
-    prefixe=t[0]
-    poignee = extract2poignee(t,prefixe)
-    if  poignee != t:     #On peut donc extraire une poignee
-        poignee_index_deb= position_extraite(t,poignee)
-        longueur_poignee=len(poignee)
-        poignee_index_fin= poignee_index_deb + longueur_poignee -1
-        l=l[:(poignee_index_deb+1)] +l[poignee_index_deb: poignee_index_fin] +l[(poignee_index_fin+1):]
-    return l
-"""
-
-if __name__ == "__main__":
-    print(double_simplification(EXEMPLE_1))
