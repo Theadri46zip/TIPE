@@ -174,6 +174,33 @@ def position_extraite(liste, ext):
             return i
     raise TypeError("ext n'est pas dans la liste")
 
+def reduction_simple(t):
+    """
+    on simplifie les voisins [i,sig] [i,-sig]
+    """
+    t2=[]
+    longueur=len(t)
+    i=0
+    while i<=longueur -2:
+        if t[i][0] != t[i+1][0]:
+            t2.append(t[i])
+        elif t[i][1] != t[i][1]:
+            t2.append(t[i])
+        else:
+            i+=1
+        i+=1
+    if t[longueur-2][0] != t[longueur-1][0]:
+        t2.append(t[longueur-1])
+    elif t[longueur-2][1] != t[longueur-1][1]:
+        t2.append(t[longueur-1])
+    return t2
+    
+def boucle_redsimp(t):
+    t2=deepcopy(t)
+    while reduction_simple(t2)!=t2:
+        t2=reduction_simple(t2)
+    return t2
+        
 
 def simplification(t):
     l=deepcopy(t)
@@ -189,6 +216,4 @@ def simplification(t):
     
 
 if __name__ == "__main__":
-    #mot2mat(EXEMPLE_1)
-    print(reduction_poignee([[1,-1],[2,1],[1,1]]))
-
+    print(boucle_redsimp([[1,-1],[2,1],[1,1],[2,1],[2,-1],[1,1]]))
