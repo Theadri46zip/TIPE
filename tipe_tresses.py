@@ -23,12 +23,12 @@ def nbr_brins(t: list[list]) -> int:
     return max(list(t[i][0] for i in range(len(t)))) + 1
 
 
-def matcar_zero(n):
+def matcar_zero(n:int):
     """Initialise une matrice carrée avec des zéros."""
     return [[0 for i in range(n)] for i in range(n)]
 
 
-def print_mat(m):
+def print_mat(m:list[list]):
     """Affichage d'une liste de liste en mode matrice."""
     if m==[]:
         print(" ")
@@ -37,7 +37,7 @@ def print_mat(m):
             print(line)
 
 
-def ajout2mat(m1, m2):
+def ajout2mat(m1:list[list], m2:list[list]):
     """Ajoute 2 matrices."""
     if len(m1)!= len(m2):
         return "matrices de tailles différentes"
@@ -45,7 +45,7 @@ def ajout2mat(m1, m2):
     return [[ m1[i][j]+m2[i][j] for j in range(n)] for i in range(n)]
 
 
-def mot2mat(t):
+def mot2mat(t:list[list]):
     """Passage d'un mot à une série de matrices.
     ne marche que si il y a 3 brins ou plus.
     """
@@ -95,7 +95,7 @@ def mot2mat(t):
 #- [i,1] suivi de [j,1] vaut [j,1] suivi de [i,1] si en valeur abs i-j >=2
 #- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
 
-def est_poignee(t):
+def est_poignee(t:list[list]):
     """
     renvoie la valeur de l'assertion (t est une poignee)
     """
@@ -105,13 +105,16 @@ def est_poignee(t):
         return False
     return t[-1]==inverse
 
-def est_poignee_cor(t):
-    prefixe = t[0]
-    suffixe = t[1]
-    bool_inverse = prefixe[0] == suffixe[0] and prefixe[1] == - suffixe[1]
-    return len(t) == 2 and bool_inverse
+def est_poignee_cor(t:list[list]):
+    if len(t)<2:
+        return False
+    else:
+        prefixe = t[0]
+        suffixe = t[1]
+        bool_inverse = prefixe[0] == suffixe[0] and prefixe[1] == - suffixe[1]
+        return len(t) == 2 and bool_inverse
             
-def extract2poignee(t,g):
+def extract2poignee(t:list[list],g:list):
     """
     renvoie la premiere poignee extraite de t ayant comme prefixe g
     """
@@ -130,7 +133,7 @@ def extract2poignee(t,g):
                     place+=1
             return l
 
-def num_generateurs(t,g):
+def num_generateurs(t:list[list],g:list):
     """
     renvoie le nombre de générateurs g et inverses g**-1 dans t
     """
@@ -141,7 +144,7 @@ def num_generateurs(t,g):
             compteur+=1
     return compteur
 
-def reduction_poignee(t):
+def reduction_poignee(t:list[list]):
     """
     Si c'est une poignee alors on la réduit
     on commence par enlever ses extremités puis on remplace si besoin le reste des generateurs par
@@ -164,7 +167,7 @@ def reduction_poignee(t):
                 t2.append([indice,sig_prefixe])
         return t2
 
-def position_extraite(liste, ext):
+def position_extraite(liste:list[list], ext:list[list]):
     """
     renvoie la position (du début) d'une liste extraite dans la liste d'origine
     """
@@ -174,34 +177,42 @@ def position_extraite(liste, ext):
             return i
     raise TypeError("ext n'est pas dans la liste")
 
-def reduction_simple(t):
+def reduction_simple(t:list[list]):
     """
     on simplifie les voisins [i,sig] [i,-sig]
     """
-    t2=[]
-    longueur=len(t)
-    i=0
-    while i<=longueur -2:
-        if t[i][0] != t[i+1][0]:
-            t2.append(t[i])
-        elif t[i][1] != t[i][1]:
-            t2.append(t[i])
+    if len(t)<=2:
+        if est_poignee_cor(t):
+            return []
         else:
+            return t
+    else:
+        t2=[]
+        longueur=len(t)
+        i=0
+        while i<=longueur -2:
+            if t[i][0] != t[i+1][0] or t[i][1] != -t[i+1][1]:
+                t2.append(t[i])
             i+=1
-        i+=1
-    if t[longueur-2][0] != t[longueur-1][0]:
-        t2.append(t[longueur-1])
-    elif t[longueur-2][1] != t[longueur-1][1]:
-        t2.append(t[longueur-1])
-    return t2
+        if t[longueur-2][0] != t[longueur-1][0] or t[longueur-2][1] != -t[longueur-1][1]:
+            t2.append(t[longueur-1])
+        return t2
     
-def boucle_redsimp(t):
+def boucle_redsimp(t:list[list]):
     t2=deepcopy(t)
     while reduction_simple(t2)!=t2:
         t2=reduction_simple(t2)
     return t2
-        
 
+def double_simplification(t:list[list]):
+    t2=boucle_redsimp(t)
+    indice=0
+    while extract2poignee(t,t2[indice]) == t2:
+        indice+=1
+    t2=extract2poignee(t,t2[indice])
+    return t2
+
+"""
 def simplification(t):
     l=deepcopy(t)
     prefixe=t[0]
@@ -212,8 +223,8 @@ def simplification(t):
         poignee_index_fin= poignee_index_deb + longueur_poignee -1
         l=l[:(poignee_index_deb+1)] +l[poignee_index_deb: poignee_index_fin] +l[(poignee_index_fin+1):]
     return l
-
+"""
     
 
 if __name__ == "__main__":
-    print(boucle_redsimp([[1,-1],[2,1],[1,1],[2,1],[2,-1],[1,1]]))
+    print(double_simplification([[2,1],[1,1],[1,1],[2,-1],[1,1],[1,-1]]))
