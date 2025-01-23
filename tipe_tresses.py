@@ -161,11 +161,14 @@ def reduction_poignee(t:list[list]):
         for [indice,signature] in l:
             if indice != m+1:
                 t2.append([indice,signature])
-            else:
+            elif indice == m+1:
                 t2.append([indice,-sig_prefixe])
                 t2.append([m,signature])
                 t2.append([indice,sig_prefixe])
+            else:
+                t2.append([indice,signature])
         return t2
+    return t
 
 def position_extraite(liste:list[list], ext:list[list]):
     """
@@ -206,10 +209,8 @@ def boucle_redsimp(t:list[list]):
 
 def double_simplification(t:list[list]):
     t2=boucle_redsimp(t)
-    indice=0
-    while extract2poignee(t,t2[indice]) == t2:
-        indice+=1
-    t2=extract2poignee(t,t2[indice])
+    if est_poignee(t2):
+        t2=reduction_poignee(t2)
     return t2
 
 """
@@ -227,4 +228,4 @@ def simplification(t):
     
 
 if __name__ == "__main__":
-    print(double_simplification([[2,1],[1,1],[1,1],[2,-1],[1,1],[1,-1]]))
+    print(double_simplification([[2,1],[1,1],[2,1],[1,-1],[1,1],[2,-1]]))
