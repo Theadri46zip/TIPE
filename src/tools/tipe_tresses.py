@@ -182,7 +182,7 @@ def position_extraite(liste:list[list], ext:list[list]):
     for i in range(len(liste) - len(ext) + 1):
         if liste[i:i+len(ext)] == ext:
             return i
-    raise TypeError("ext n'est pas dans la liste")
+    return 0
 
 def reduction_simple(t:list[list]):
     """
@@ -198,6 +198,8 @@ def reduction_simple(t:list[list]):
     while i<=longueur -2:
         if t[i][0] != t[i+1][0] or t[i][1] != -t[i+1][1]:
             t2.append(t[i])
+        else:
+            i+=1
         i+=1
     if t[longueur-2][0] != t[longueur-1][0] or t[longueur-2][1] != -t[longueur-1][1]:
         t2.append(t[longueur-1])
@@ -217,8 +219,9 @@ def double_simplification(t:list[list]):
     on effectue boucle simple puis on va chercher une poignee a réduire
     """
     t2 = boucle_redsimp(t)
-    LOGGER.debug(t2)
-    if est_poignee(t2):
+    if t2==[]:
+        return []
+    elif est_poignee(t2):
         t2 = reduction_poignee(t2)
     else:
         indice = 0
@@ -228,4 +231,26 @@ def double_simplification(t:list[list]):
         fin = debut + len(poignee)
         t2 = t2[:debut] + reduction_poignee(poignee) + t2[fin:]
     t2 = boucle_redsimp(t2)
+    return t2
+
+def simplifiable(t):
+    """
+    valeur de l'assertion (t est simplifiable ou du moins modifiable)
+    """
+    n= nbr_brins(t)
+    simplifiable=False
+    for i in range(n):
+        positif=[i,1]
+        negatif=[i,-1]
+        if positif in t and negatif in t:
+            simplifiable=True
+    return simplifiable
+
+def boucle_2simp(t):
+    """
+    on effectue la réduction double tant qu'on le peut
+    """
+    t2=deepcopy(t)
+    while simplifiable(t2):
+        t2=double_simplification(t2)
     return t2

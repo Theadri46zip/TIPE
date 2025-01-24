@@ -1,3 +1,5 @@
-from tools.tipe_tresses import EXEMPLE_1
+from tools.tipe_tresses import *
+from tools.tipe_tresses import EXEMPLE_2
 
-print(EXEMPLE_1[:0])
+
+print(boucle_2simp([[1,1],[2,1],[1,-1],[1,1],[2,1],[1,-1]]))
