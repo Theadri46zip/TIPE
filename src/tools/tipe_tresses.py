@@ -221,7 +221,7 @@ def double_simplification(t:list[list]):
     t2 = boucle_redsimp(t)
     if t2==[]:
         return []
-    elif est_poignee(t2):
+    if est_poignee(t2):
         t2 = reduction_poignee(t2)
     else:
         indice = 0
@@ -238,13 +238,13 @@ def simplifiable(t):
     valeur de l'assertion (t est simplifiable ou du moins modifiable)
     """
     n= nbr_brins(t)
-    simplifiable=False
+    simp=False
     for i in range(n):
         positif=[i,1]
         negatif=[i,-1]
         if positif in t and negatif in t:
-            simplifiable=True
-    return simplifiable
+            simp=True
+    return simp
 
 def boucle_2simp(t):
     """
