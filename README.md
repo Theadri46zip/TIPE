@@ -14,4 +14,11 @@
 
 - Diffie Hellman
 
+# documentation
+
+```
+cd src
+py -m pydoc -b .\tools\tipe_tresses.py
+```
+
  
