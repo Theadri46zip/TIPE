@@ -1,57 +1,65 @@
 """Toolkit matriciel pour codage de tresses."""
 from copy import deepcopy
 import logging
+from typing import Literal
+
 FORMAT = '%(asctime)s - %(funcName)s - %(lineno)d - %(levelname)s - %(message)s'
 logging.basicConfig(format=FORMAT)
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.DEBUG)
 
+# Création de types pour les tresses, représentation d'Artin
+
+Sig=Literal[1,-1]
+Noeud=tuple[int,Literal[1,-1]]
+Tresse=list[Noeud]
+
 
 # sigma1-1, sigma2, sigma1, sigma2
-EXEMPLE_1: list[list] = [
-    [1,-1],
-    [2,1],
-    [1,1],
-    [2,1]
+EXEMPLE_1: Tresse = [
+    (1,-1),
+    (2,1),
+    (1,1),
+    (2,1)
 ]
 # sigma2, sigma1, sigma1, sigma2-1, sigma1, sigma1-1
-EXEMPLE_2: list[list] = [
-    [2,1],
-    [1,1],
-    [1,1],
-    [2,-1],
-    [1,1],
-    [1,-1]
+EXEMPLE_2: Tresse = [
+    (2,1),
+    (1,1),
+    (1,1),
+    (2,-1),
+    (1,1),
+    (1,-1)
 ]
 
-def nbr_brins(t: list[list]) -> int:
+def nbr_brins(t: Tresse) -> int:
     """Nombre de brins utiles de la tresse"""
     return max(list(t[i][0] for i in range(len(t)))) + 1
 
 
-def matcar_zero(n:int):
+def matcar_zero(n:int)->list[list]:
     """Initialise une matrice carrée avec des zéros."""
     return [[0 for i in range(n)] for i in range(n)]
 
 
-def print_mat(m:list[list]):
+def print_mat(m:list[list])->None:
     """Affichage d'une liste de liste en mode matrice."""
     if m==[]:
-        print(" ")
-    else:
-        for _, line in enumerate(m):
-            print(line)
+        return
+    for ligne in m:
+        print(ligne)
+    return
 
 
-def ajout2mat(m1:list[list], m2:list[list]):
+def ajout2mat(m1:list[list], m2:list[list])->list[list]:
     """Ajoute 2 matrices."""
-    if len(m1)!= len(m2):
-        return "matrices de tailles différentes"
+    if len(m1)!= len(m2) or len(m1[0])!= len(m2[0]):
+        raise ValueError("matrices de tailles différentes")
     n=len(m1)
     return [[ m1[i][j]+m2[i][j] for j in range(n)] for i in range(n)]
 
 
-def mot2mat(t:list[list]):
+def mot2mat(t:Tresse)->None:
     """Passage d'un mot à une série de matrices.
     ne marche que si il y a 3 brins ou plus.
     """
@@ -101,17 +109,17 @@ def mot2mat(t:list[list]):
 #- [i,1] suivi de [j,1] vaut [j,1] suivi de [i,1] si en valeur abs i-j >=2
 #- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
 
-def est_poignee(t:list[list]):
+def est_poignee(t:Tresse)->bool:
     """
     renvoie la valeur de l'assertion (t est une poignee)
     """
     prefixe=t[0]
-    inverse=[t[0][0],-t[0][1]]
+    inverse=(t[0][0],-t[0][1])
     if prefixe in t[1:-1] or inverse in t[1:-1]:
         return False
     return t[-1]==inverse
 
-def est_poignee_cor(t:list[list]):
+def est_poignee_cor(t:Tresse)->bool:
     """
     valeur de l'assertion (t est une poignee correcte)
     """
@@ -122,35 +130,35 @@ def est_poignee_cor(t:list[list]):
     bool_inverse = prefixe[0] == suffixe[0] and prefixe[1] == - suffixe[1]
     return len(t) == 2 and bool_inverse
 
-def extract2poignee(t:list[list],g:list):
+def extract2poignee(t:Tresse,g:Noeud)->Tresse:
     """
     renvoie la premiere poignee extraite de t ayant comme prefixe g
     """
-    inverse=[g[0],-g[1]]
+    inverse=(g[0],-g[1])
     if g not in t or inverse not in t:
         return t
     l=[g]
     place = t.index(g)+1
-    if inverse not in t[(place):]:
+    if inverse not in t[place:]:
         return t
-    for noeud in t[(place):]:
+    for noeud in t[place:]:
         if noeud != g and inverse not in l and inverse in t[place:]:
             l.append(noeud)
             place+=1
     return l
 
-def num_generateurs(t:list[list],g:list):
+def num_generateurs(t:Tresse,g:Noeud)->int:
     """
     renvoie le nombre de générateurs g et inverses g**-1 dans t
     """
     compteur=0
-    inverse=[g[0],-g[1]]
+    inverse=(g[0],-g[1])
     for sigma in t:
         if sigma in (g ,inverse):
             compteur+=1
     return compteur
 
-def reduction_poignee(t:list[list]):
+def reduction_poignee(t:Tresse)->Tresse:
     """
     Si c'est une poignee alors on la réduit
     on commence par enlever ses extremités puis on remplace si besoin le reste des generateurs par
@@ -162,19 +170,19 @@ def reduction_poignee(t:list[list]):
         ind_prefix = prefix[0] # m dans le livre
         l = t[1:-1]
         t2 = []
-        for [ind, sig] in l:
+        for (ind, sig) in l:
             if ind != ind_prefix+1:
-                t2.append([ind, sig])
+                t2.append((ind, sig))
             elif ind == ind_prefix+1:
-                t2.append([ind, -sig_prefix])
-                t2.append([ind_prefix, sig])
-                t2.append([ind, sig_prefix])
+                t2.append((ind, -sig_prefix))
+                t2.append((ind_prefix, sig))
+                t2.append((ind, sig_prefix))
             else:
-                t2.append([ind, sig])
+                t2.append((ind, sig))
         return t2
     return t
 
-def position_extraite(liste:list[list], ext:list[list]):
+def position_extraite(liste:Tresse, ext:Tresse)->int:
     """
     renvoie la position (du début) d'une liste extraite dans la liste d'origine
     """
@@ -184,7 +192,7 @@ def position_extraite(liste:list[list], ext:list[list]):
             return i
     return 0
 
-def reduction_simple(t:list[list]):
+def reduction_simple(t:Tresse)->Tresse:
     """
     on simplifie les voisins [i,sig] [i,-sig]
     """
@@ -205,7 +213,7 @@ def reduction_simple(t:list[list]):
         t2.append(t[longueur-1])
     return t2
 
-def boucle_redsimp(t:list[list]):
+def boucle_redsimp(t:Tresse)->Tresse:
     """
     on effectue la réduction simple tant qu'on le peut
     """
@@ -214,7 +222,7 @@ def boucle_redsimp(t:list[list]):
         t2=reduction_simple(t2)
     return t2
 
-def double_simplification(t:list[list]):
+def double_simplification(t:Tresse)->Tresse:
     """
     on effectue boucle simple puis on va chercher une poignee a réduire
     """
@@ -233,20 +241,19 @@ def double_simplification(t:list[list]):
     t2 = boucle_redsimp(t2)
     return t2
 
-def simplifiable(t):
+def simplifiable(t:Tresse)-> bool:
     """
     valeur de l'assertion (t est simplifiable ou du moins modifiable)
     """
     n= nbr_brins(t)
-    simp=False
     for i in range(n):
-        positif=[i,1]
-        negatif=[i,-1]
+        positif=(i,1)
+        negatif=(i,-1)
         if positif in t and negatif in t:
-            simp=True
-    return simp
+            return True
+    return False
 
-def boucle_2simp(t):
+def boucle_2simp(t:Tresse)->Tresse:
     """
     on effectue la réduction double tant qu'on le peut
     """

@@ -1,5 +1,5 @@
-from tools.tipe_tresses import *
-from tools.tipe_tresses import EXEMPLE_2
+from tools.tipe_tresses import boucle_2simp
+from tools.tipe_tresses import EXEMPLE_1
 
 
-print(mot2mat(EXEMPLE_2))
+print(boucle_2simp(EXEMPLE_1))
