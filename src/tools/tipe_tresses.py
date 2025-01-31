@@ -245,6 +245,8 @@ def simplifiable(t:Tresse)-> bool:
     """
     valeur de l'assertion (t est simplifiable ou du moins modifiable)
     """
+    if len(t)==1:
+        return False
     n= nbr_brins(t)
     for i in range(n):
         positif=(i,1)
