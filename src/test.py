@@ -1,5 +1,5 @@
-from tools.tipe_tresses import boucle_2simp
-from tools.tipe_tresses import EXEMPLE_2
+from tools.tipe_tresses import inverse,addition,boucle_redsimp
+from tools.tipe_tresses import EXEMPLE_2,EXEMPLE_1
 
 
-print(boucle_2simp([[1,1]]))
+print(addition(EXEMPLE_2,inverse(EXEMPLE_2)),"\n",boucle_redsimp(addition(EXEMPLE_2,inverse(EXEMPLE_2))))

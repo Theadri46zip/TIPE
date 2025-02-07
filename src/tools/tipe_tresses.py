@@ -263,3 +263,15 @@ def boucle_2simp(t:Tresse)->Tresse:
     while simplifiable(t2):
         t2=double_simplification(t2)
     return t2
+
+def inverse(t:Tresse) -> Tresse:
+    t2=deepcopy(t)
+    t2.reverse()
+    t3=[]
+    n=len(t2)
+    for i in range(n):
+        t3.append((t2[i][0],-1*t2[i][1]))
+    return t3
+
+def addition(t1:Tresse,t2:Tresse)->Tresse:
+    return t1+t2
