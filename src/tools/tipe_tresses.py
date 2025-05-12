@@ -114,10 +114,10 @@ def est_poignee(t:Tresse)->bool:
     renvoie la valeur de l'assertion (t est une poignee)
     """
     prefixe=t[0]
-    inverse=(t[0][0],-t[0][1])
-    if prefixe in t[1:-1] or inverse in t[1:-1]:
+    inv=(t[0][0],-t[0][1])
+    if prefixe in t[1:-1] or inv in t[1:-1]:
         return False
-    return t[-1]==inverse
+    return t[-1]==inv
 
 def est_poignee_cor(t:Tresse)->bool:
     """
@@ -134,15 +134,15 @@ def extract2poignee(t:Tresse,g:Noeud)->Tresse:
     """
     renvoie la premiere poignee extraite de t ayant comme prefixe g
     """
-    inverse=(g[0],-g[1])
-    if g not in t or inverse not in t:
+    inv=(g[0],-g[1])
+    if g not in t or inv not in t:
         return t
     l=[g]
     place = t.index(g)+1
-    if inverse not in t[place:]:
+    if inv not in t[place:]:
         return t
     for noeud in t[place:]:
-        if noeud != g and inverse not in l and inverse in t[place:]:
+        if noeud != g and inv not in l and inv in t[place:]:
             l.append(noeud)
             place+=1
     return l
@@ -152,9 +152,9 @@ def num_generateurs(t:Tresse,g:Noeud)->int:
     renvoie le nombre de générateurs g et inverses g**-1 dans t
     """
     compteur=0
-    inverse=(g[0],-g[1])
+    inv=(g[0],-g[1])
     for sigma in t:
-        if sigma in (g ,inverse):
+        if sigma in (g ,inv):
             compteur+=1
     return compteur
 
@@ -282,7 +282,6 @@ def addition(t1:Tresse,t2:Tresse)->Tresse:
     """
     return t1+t2
 
-
 """
 diffie hellman v1
 avec seulement la concatenation
@@ -330,8 +329,8 @@ def bob_2(b:Tresse,pa:Tresse)->Tresse:
     p_f=b+pa+inverse(b)
     return p_f
 
-
 """
+
 diffie hellman v2
 avec conjugaison
 il faut vérifier
@@ -360,4 +359,3 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     """
     res=inverse(v) + u
     return res
-
