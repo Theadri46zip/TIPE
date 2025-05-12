@@ -265,6 +265,9 @@ def boucle_2simp(t:Tresse)->Tresse:
     return t2
 
 def inverse(t:Tresse) -> Tresse:
+    """
+    renvoie la tresse inverse de t
+    """
     t2=deepcopy(t)
     t2.reverse()
     t3=[]
@@ -274,4 +277,87 @@ def inverse(t:Tresse) -> Tresse:
     return t3
 
 def addition(t1:Tresse,t2:Tresse)->Tresse:
+    """
+    compose deux tresses, les mets bout à bout
+    """
     return t1+t2
+
+
+"""
+diffie hellman v1
+avec seulement la concatenation
+"""
+
+def init_choix() -> tuple:
+    """
+    Initialisation de la configuration, 
+    mais on controle ici alice et bob
+    """
+    a=Tresse(input("clé d'Alice:"))
+    b=Tresse(input("clé de Bob"))
+    p=Tresse(input("clé commune"))
+    return (a,b,p)
+
+def alice_1(a:Tresse,p:Tresse)->Tresse:
+    """
+    alice crée une partie de la clé,
+    on la transmettra a bob
+    """
+    p_a=a+p+inverse(p)
+    return p_a
+
+def bob_1(b:Tresse,p:Tresse)->Tresse:
+    """
+    bob crée l'autre partie de la clé,
+    on la transmettra a alice
+    """
+    p_b=b+p+inverse(b)
+    return p_b
+
+def alice_2(a:Tresse,pb:Tresse)->Tresse:
+    """
+    bob a transmis sa partie de la clé
+    on crée la clé finale
+    """
+    p_f=a+pb+inverse(a)
+    return p_f
+
+def bob_2(b:Tresse,pa:Tresse)->Tresse:
+    """
+    alice a transmis sa partie de la clé
+    on crée la clé finale
+    """
+    p_f=b+pa+inverse(b)
+    return p_f
+
+
+"""
+diffie hellman v2
+avec conjugaison
+il faut vérifier
+1) Gamma linéaire par rapport a sa deuxieme variable
+2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
+3)Impossible de trouver x avec gamma(x,_)
+"""
+
+def conjugaison(x:Tresse,y:Tresse)->Tresse:
+    """
+    fonction gamma qui renvoie x*-1 +y+ x
+    """
+    res=inverse(x)+y+x
+    return res
+
+def alpha(u:Tresse,v:Tresse)->Tresse:
+    """
+    renvoie u*-1 + v
+    """
+    res=inverse(u)+v
+    return res
+
+def beta(u:Tresse,v:Tresse)->Tresse:
+    """
+    renvoie u + v*-1
+    """
+    res=inverse(v) + u
+    return res
+
