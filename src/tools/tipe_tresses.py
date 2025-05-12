@@ -282,11 +282,6 @@ def addition(t1:Tresse,t2:Tresse)->Tresse:
     """
     return t1+t2
 
-"""
-diffie hellman v1
-avec seulement la concatenation
-"""
-
 def init_choix() -> tuple:
     """
     Initialisation de la configuration, 
@@ -296,6 +291,11 @@ def init_choix() -> tuple:
     b=Tresse(input("clé de Bob"))
     p=Tresse(input("clé commune"))
     return (a,b,p)
+
+"""
+diffie hellman v1
+avec seulement la concatenation
+"""
 
 def alice_1(a:Tresse,p:Tresse)->Tresse:
     """
@@ -359,3 +359,5 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     """
     res=inverse(v) + u
     return res
+
+#def decomp(t:Tresse,s:list[Tresse])->Tresse:
