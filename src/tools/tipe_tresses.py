@@ -438,12 +438,16 @@ def bob_2_v2(b:Tresse,l_a_gamma:list[Noeud],l_a:list[Noeud])->Tresse:
         res+= l_a_gamma[ind]
     return res
 
-def alice_3_v2(a:Tresse,l_b_gamma:list[Noeud],l_b:list[Noeud])->Tresse:
-    gam=alice_2_v2(a,l_b_gamma,l_b)
+def alice_3_v2(a:Tresse,gam:Tresse)->Tresse:
+    """
+    On calcule alpha(a,gamma(b,a))
+    """
     res=alpha(a,gam)
     return res
 
-def bob_3_v2(b:Tresse,l_a_gamma:list[Noeud],l_a:list[Noeud])->Tresse:
-    gam=bob_2_v2(b,l_a_gamma,l_a)
+def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
+    """
+    On calcule beta(b,gamma(a,b))
+    """
     res=beta(b,gam)
     return res
