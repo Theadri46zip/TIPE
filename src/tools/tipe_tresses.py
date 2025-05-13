@@ -282,7 +282,12 @@ def addition(t1:Tresse,t2:Tresse)->Tresse:
     """
     return t1+t2
 
-def init_choix() -> tuple:
+"""
+diffie hellman v1
+avec seulement la concatenation
+"""
+
+def init_choix_v1() -> tuple:
     """
     Initialisation de la configuration, 
     mais on controle ici alice et bob
@@ -292,12 +297,7 @@ def init_choix() -> tuple:
     p=Tresse(input("clé commune"))
     return (a,b,p)
 
-"""
-diffie hellman v1
-avec seulement la concatenation
-"""
-
-def alice_1(a:Tresse,p:Tresse)->Tresse:
+def alice_1_v1(a:Tresse,p:Tresse)->Tresse:
     """
     alice crée une partie de la clé,
     on la transmettra a bob
@@ -305,7 +305,7 @@ def alice_1(a:Tresse,p:Tresse)->Tresse:
     p_a=a+p+inverse(p)
     return p_a
 
-def bob_1(b:Tresse,p:Tresse)->Tresse:
+def bob_1_v1(b:Tresse,p:Tresse)->Tresse:
     """
     bob crée l'autre partie de la clé,
     on la transmettra a alice
@@ -313,7 +313,7 @@ def bob_1(b:Tresse,p:Tresse)->Tresse:
     p_b=b+p+inverse(b)
     return p_b
 
-def alice_2(a:Tresse,pb:Tresse)->Tresse:
+def alice_2_v1(a:Tresse,pb:Tresse)->Tresse:
     """
     bob a transmis sa partie de la clé
     on crée la clé finale
@@ -321,7 +321,7 @@ def alice_2(a:Tresse,pb:Tresse)->Tresse:
     p_f=a+pb+inverse(a)
     return p_f
 
-def bob_2(b:Tresse,pa:Tresse)->Tresse:
+def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
     """
     alice a transmis sa partie de la clé
     on crée la clé finale
@@ -338,6 +338,23 @@ il faut vérifier
 2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
 3)Impossible de trouver x avec gamma(x,_)
 """
+def init_choix_v2() -> tuple:
+    """
+    Initialisation de la configuration,
+    on crée le monoide choisi par un des deux,
+    puis la clé doit provenir de celui-ci
+    On controle ici soit alice soit bob pour allèger les notations
+    """
+ 
+    l=[]
+    choix=()
+    while choix != "exit":
+        choix=input("Entrez un noeud générateur du monoide, \n'exit' si fini :")
+        if choix != "exit":
+            l.append(choix)
+    print(l)
+    a=Tresse(input("choisissez une clé(Tresse) composée d'éléments ci dessus:"))
+    return (a,l)
 
 def conjugaison(x:Tresse,y:Tresse)->Tresse:
     """
@@ -360,4 +377,4 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     res=inverse(v) + u
     return res
 
-#def decomp(t:Tresse,s:list[Tresse])->Tresse:
+#def v2alice_1(a:Tresse,l_):
