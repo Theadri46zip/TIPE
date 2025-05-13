@@ -349,7 +349,7 @@ def init_choix_v2() -> tuple:
     l=[]
     choix=()
     while choix != "exit":
-        choix=input("Entrez un noeud générateur du monoide, \n'exit' si fini :")
+        choix=input("Entrez une tresse génératrice du monoide, \n'exit' si fini :")
         if choix != "exit":
             l.append(choix)
     print(l)
@@ -377,7 +377,7 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     res=inverse(v) + u
     return res
 
-def alice_1_v2(a:Tresse,l_b:list[Noeud])->list[Tresse]:
+def alice_1_v2(a:Tresse,l_b:list[Tresse])->list[Tresse]:
     """
     alice renvoie la liste des gamma(a,tk)
     les tk sont les generateurs du monoide de bob, 
@@ -388,53 +388,59 @@ def alice_1_v2(a:Tresse,l_b:list[Noeud])->list[Tresse]:
         l2.append(gamma(a,noeud))
     return l2
 
-def bob_1_v2(b:Tresse,l_a:list[Noeud])->list[Tresse]:
+def bob_1_v2(b:Tresse,l_a:list[Tresse])->list[Tresse]:
     """
-    bob renvoie la liste des gamma(sk,b)
+    bob renvoie la liste des gamma(b,sk)
     les sk sont les generateurs du monoide de alice, 
     contenus dans l_a
     """
     l2=[]
     for noeud in l_a:
-        l2.append(gamma(noeud,b))
+        l2.append(gamma(b,noeud))
     return l2
 
-def index(element,liste:list)->int:
+def position_gen(t:Tresse,l_gen:list[Tresse])->int:
     """
-    position de element dans liste
+    renvoie une liste dont chaque element indique 
+    l'indice d'un élément de t dans l_gen
     """
-    for ind,e in enumerate(liste):
-        if e==element:
-            return ind
-    return "element not in liste"
+    l_ind=[]
+    i=0
+    while i<len(t):
+        l2=[]
+        l2.append(t[i])
+        i+=1
+        while l2 not in l_gen:
+            l2.append(t[i])
+            i+=1
+        l_ind.append(l_gen.index(l2))
+    return l_ind
 
-def alice_2_v2(a:Tresse,l_b_gamma:list[Noeud],l_b:list[Noeud])->Tresse:
+def alice_2_v2(a:Tresse,l_b_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
     """
     alice calcule gamma(b,a) a partir
     des gamma(b,sk) transmis par bob, contenus dans l_b_gamma
     pour décomposer a en sk on retrouve la position des
-    noeuds qui composent a dans l_b puis on prend la valeur
+    noeuds qui composent a dans l_a puis on prend la valeur
     de meme position dans l_b_gamma
     """
     res=[]
-    ind=0
-    for noeud in a:
-        ind=index(noeud,l_b)
+    inds=position_gen(a,l_a)
+    for ind in inds:
         res+= l_b_gamma[ind]
     return res
 
-def bob_2_v2(b:Tresse,l_a_gamma:list[Noeud],l_a:list[Noeud])->Tresse:
+def bob_2_v2(b:Tresse,l_a_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
     """
     bob calcule gamma(a,b) a partir
     des gamma(tk,b) transmis par bob, contenus dans l_a_gamma
     pour décomposer a en sk on retrouve la position des
-    noeuds qui composent a dans l_a puis on prend la valeur
+    noeuds qui composent a dans l_b puis on prend la valeur
     de meme position dans l_a_gamma
     """
     res=[]
-    ind=0
-    for noeud in b:
-        ind=index(noeud,l_a)
+    inds=position_gen(b,l_b)
+    for ind in inds:
         res+= l_a_gamma[ind]
     return res
 
