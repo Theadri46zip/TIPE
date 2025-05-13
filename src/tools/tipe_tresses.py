@@ -128,7 +128,7 @@ def est_poignee_cor(t:Tresse)->bool:
     prefixe = t[0]
     suffixe = t[1]
     bool_inverse = prefixe[0] == suffixe[0] and prefixe[1] == - suffixe[1]
-    return len(t) == 2 and bool_inverse
+    return len(t) == 2 and bool_inverse and est_poignee(t)
 
 def extract2poignee(t:Tresse,g:Noeud)->Tresse:
     """
