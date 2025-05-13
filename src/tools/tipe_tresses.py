@@ -356,9 +356,9 @@ def init_choix_v2() -> tuple:
     a=Tresse(input("choisissez une clé(Tresse) composée d'éléments ci dessus:"))
     return (a,l)
 
-def conjugaison(x:Tresse,y:Tresse)->Tresse:
+def gamma(x:Tresse,y:Tresse)->Tresse:
     """
-    fonction gamma qui renvoie x*-1 +y+ x
+    fonction conjugaison qui renvoie x*-1 +y+ x
     """
     res=inverse(x)+y+x
     return res
@@ -377,4 +377,73 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     res=inverse(v) + u
     return res
 
-#def v2alice_1(a:Tresse,l_):
+def alice_1_v2(a:Tresse,l_b:list[Noeud])->list[Tresse]:
+    """
+    alice renvoie la liste des gamma(a,tk)
+    les tk sont les generateurs du monoide de bob, 
+    contenus dans l_b
+    """
+    l2=[]
+    for noeud in l_b:
+        l2.append(gamma(a,noeud))
+    return l2
+
+def bob_1_v2(b:Tresse,l_a:list[Noeud])->list[Tresse]:
+    """
+    bob renvoie la liste des gamma(sk,b)
+    les sk sont les generateurs du monoide de alice, 
+    contenus dans l_a
+    """
+    l2=[]
+    for noeud in l_a:
+        l2.append(gamma(noeud,b))
+    return l2
+
+def index(element,liste:list)->int:
+    """
+    position de element dans liste
+    """
+    for ind,e in enumerate(liste):
+        if e==element:
+            return ind
+    return "element not in liste"
+
+def alice_2_v2(a:Tresse,l_b_gamma:list[Noeud],l_b:list[Noeud])->Tresse:
+    """
+    alice calcule gamma(b,a) a partir
+    des gamma(b,sk) transmis par bob, contenus dans l_b_gamma
+    pour décomposer a en sk on retrouve la position des
+    noeuds qui composent a dans l_b puis on prend la valeur
+    de meme position dans l_b_gamma
+    """
+    res=[]
+    ind=0
+    for noeud in a:
+        ind=index(noeud,l_b)
+        res+= l_b_gamma[ind]
+    return res
+
+def bob_2_v2(b:Tresse,l_a_gamma:list[Noeud],l_a:list[Noeud])->Tresse:
+    """
+    bob calcule gamma(a,b) a partir
+    des gamma(tk,b) transmis par bob, contenus dans l_a_gamma
+    pour décomposer a en sk on retrouve la position des
+    noeuds qui composent a dans l_a puis on prend la valeur
+    de meme position dans l_a_gamma
+    """
+    res=[]
+    ind=0
+    for noeud in b:
+        ind=index(noeud,l_a)
+        res+= l_a_gamma[ind]
+    return res
+
+def alice_3_v2(a:Tresse,l_b_gamma:list[Noeud],l_b:list[Noeud])->Tresse:
+    gam=alice_2_v2(a,l_b_gamma,l_b)
+    res=alpha(a,gam)
+    return res
+
+def bob_3_v2(b:Tresse,l_a_gamma:list[Noeud],l_a:list[Noeud])->Tresse:
+    gam=bob_2_v2(b,l_a_gamma,l_a)
+    res=beta(b,gam)
+    return res
