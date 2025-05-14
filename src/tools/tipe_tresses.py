@@ -282,10 +282,10 @@ def addition(t1:Tresse,t2:Tresse)->Tresse:
     """
     return t1+t2
 
-"""
-diffie hellman v1
-avec seulement la concatenation
-"""
+
+#diffie hellman v1
+#avec seulement la concatenation
+
 
 def init_choix_v1() -> tuple:
     """
@@ -329,15 +329,14 @@ def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
     p_f=b+pa+inverse(b)
     return p_f
 
-"""
 
-diffie hellman v2
-avec conjugaison
-il faut vérifier
-1) Gamma linéaire par rapport a sa deuxieme variable
-2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
-3)Impossible de trouver x avec gamma(x,_)
-"""
+#diffie hellman v2
+#avec conjugaison
+#il faut vérifier
+#1) Gamma linéaire par rapport a sa deuxieme variable
+#2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
+#3)Impossible de trouver x avec gamma(x,_)
+
 def init_choix_v2() -> tuple:
     """
     Initialisation de la configuration,
@@ -345,7 +344,6 @@ def init_choix_v2() -> tuple:
     puis la clé doit provenir de celui-ci
     On controle ici soit alice soit bob pour allèger les notations
     """
- 
     l=[]
     choix=()
     while choix != "exit":
