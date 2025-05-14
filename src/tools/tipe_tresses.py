@@ -416,32 +416,32 @@ def position_gen(t:Tresse,l_gen:list[Tresse])->int:
         l_ind.append(l_gen.index(l2))
     return l_ind
 
-def alice_2_v2(a:Tresse,l_b_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
+def alice_2_v2(a:Tresse,l_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
     """
     alice calcule gamma(b,a) a partir
-    des gamma(b,sk) transmis par bob, contenus dans l_b_gamma
+    des gamma(b,sk) transmis par bob, contenus dans l_gamma
     pour décomposer a en sk on retrouve la position des
     noeuds qui composent a dans l_a puis on prend la valeur
-    de meme position dans l_b_gamma
+    de meme position dans l_gamma
     """
     res=[]
     inds=position_gen(a,l_a)
     for ind in inds:
-        res+= l_b_gamma[ind]
+        res+= l_gamma[ind]
     return res
 
-def bob_2_v2(b:Tresse,l_a_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
+def bob_2_v2(b:Tresse,l_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
     """
     bob calcule gamma(a,b) a partir
-    des gamma(tk,b) transmis par bob, contenus dans l_a_gamma
+    des gamma(tk,b) transmis par bob, contenus dans l_gamma
     pour décomposer a en sk on retrouve la position des
     noeuds qui composent a dans l_b puis on prend la valeur
-    de meme position dans l_a_gamma
+    de meme position dans l_gamma
     """
     res=[]
     inds=position_gen(b,l_b)
     for ind in inds:
-        res+= l_a_gamma[ind]
+        res+= l_gamma[ind]
     return res
 
 def alice_3_v2(a:Tresse,gam:Tresse)->Tresse:
