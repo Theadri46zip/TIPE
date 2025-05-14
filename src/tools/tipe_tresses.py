@@ -282,10 +282,8 @@ def addition(t1:Tresse,t2:Tresse)->Tresse:
     """
     return t1+t2
 
-
 #diffie hellman v1
 #avec seulement la concatenation
-
 
 def init_choix_v1() -> tuple:
     """
@@ -328,7 +326,6 @@ def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
     """
     p_f=b+pa+inverse(b)
     return p_f
-
 
 #diffie hellman v2
 #avec conjugaison
