@@ -63,9 +63,12 @@ def tresses_trois_brins(L):
             for pos, brin in enumerate(ordre_brins):
                 n_pos = index(n_ordre, brin)
                 # Marquer le segment suivant comme un croisement
-                trajectoires[brin][-1] = (trajectoires[brin][-1][0], trajectoires[brin][-1][1], True)              
+                trajectoires[brin][-1] = (trajectoires[brin][-1][0],
+                                          trajectoires[brin][-1][1],
+                                          True
+                                          )
                 trajectoires[brin].append((n_pos, y + 1, False))
-            ordre_brins = n_ordre               
+            ordre_brins = n_ordre
             ordres_par_etape.append(ordre_brins.copy())
             y += 1
         for pos, brin in enumerate(ordre_brins):
@@ -77,21 +80,21 @@ def tresses_trois_brins(L):
         points = trajectoires[brin]
         xp, yp = decomposition([(x, y) for x, y, _ in points])
         for j in range(len(xp) - 1):
-            x0, x1 = xp[j], xp[j+1]                               
+            x0, x1 = xp[j], xp[j+1]
             y0, y1 = yp[j], yp[j+1]
-            couleur = couleurs[brin]                                           
+            couleur = couleurs[brin]
 
             est_croisement = points[j][2]
             if est_croisement:
                 i, s = L[y0]
                 ordre = ordres_par_etape[y0]
-                brin_g = ordre[i - 1]        
+                brin_g = ordre[i - 1]
                 brin_d = ordre[i]
                 brin_dessous = brin_g if s == 1 else brin_d
 
                 if brin == brin_dessous:
                     frac = 0.10
-                    d_x = x1 - x0  
+                    d_x = x1 - x0
                     d_y = y1 - y0
                     x_a = x0 + d_x * (0.5 - frac)
                     y_a = y0 + d_y * (0.5 - frac)
@@ -100,7 +103,7 @@ def tresses_trois_brins(L):
                     t.plot([x0, x_a], [y0, y_a], color=couleur, linewidth=2)
                     t.plot([x_b, x1], [y_b, y1], color=couleur, linewidth=2,)
                 else:
-                  t.plot([x0, x1], [y0, y1], color=couleur, linewidth=2)
+                    t.plot([x0, x1], [y0, y1], color=couleur, linewidth=2)
 
     sigma_labels = [fr'$\sigma_{{{i}}}^{{{s}}}$' for i, s in L]
     for label in sigma_labels:
@@ -135,10 +138,15 @@ def tresses_n_brins(L, n):
     else:
         for i, (croisement, _) in enumerate(L):
             n_ordre = ordre_brins.copy()
-            n_ordre[croisement - 1], n_ordre[croisement] = n_ordre[croisement], n_ordre[croisement - 1]
+            temp=n_ordre[croisement]
+            n_ordre[croisement]=n_ordre[croisement-1]
+            n_ordre[croisement]=temp
             for pos, brin in enumerate(ordre_brins):
                 n_pos = index(n_ordre, brin)
-                trajectoires[brin][-1] = (trajectoires[brin][-1][0], trajectoires[brin][-1][1], True)
+                trajectoires[brin][-1] = (trajectoires[brin][-1][0],
+                                          trajectoires[brin][-1][1],
+                                          True
+                                          )
                 trajectoires[brin].append((n_pos, y + 1, False))
             ordre_brins = n_ordre
             ordres_par_etape.append(ordre_brins.copy())
@@ -186,7 +194,6 @@ def tresses_n_brins(L, n):
     t.set_xlim(-0.5, n-0.5)
     t.set_ylim(y, -0.8)
 
-    # Ajouter les numéros 1 à n au pied de chaque brin (en haut du graphique, y=0) avec l'ordre final
     for pos, brin in enumerate(range(n)):
         t.text(pos, -0.4, str(brin + 1), ha='center', va='bottom', fontsize=12)
 

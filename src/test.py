@@ -1,6 +1,6 @@
 from tools.tipe_tresses import nbr_brins,boucle_2simp
 from tools.tipe_tresses import EXEMPLE_2,EXEMPLE_1
-from tools.TIPE_interface_graph import tresses_n_brins
+from tools.tipe_graphique import tresses_n_brins
 
 n1=nbr_brins(EXEMPLE_2)
 tresses_n_brins(EXEMPLE_2,n1)
