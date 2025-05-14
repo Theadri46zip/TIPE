@@ -1,11 +1,13 @@
-from typing import Literal,List,Tuple
+"""toolkit pour représentation graphique des tresses"""
+from typing import Literal
 import matplotlib.pyplot as plt
+import logging
 import matplotlib.colors as mcolors
 
 # Création de types pour les tresses, représentation d'Artin
 Sig=Literal[1,-1]
-Noeud=Tuple[int,Literal[1,-1]]
-Tresse=List[Noeud]
+Noeud=tuple[int,Literal[1,-1]]
+Tresse=list[Noeud]
 
 EXEMPLE_1: Tresse = [
     (1,-1),
@@ -191,9 +193,6 @@ def tresses_n_brins(L, n):
     t.axis('off')
     plt.show()
 
-exemple = [(6, 1),(1, 1),(2,1),(3,-1),(4,-1),(6,1),(5,-1),(7,1),(5,1),(7,-1),(1,-1)]
-ex=[]
-exemple1=[(1,1),(2,1),(1,-1),(1,1),(2,-1),(1,1),(2,1),(1,-1),(1,1),(2,-1)]
 
 
 

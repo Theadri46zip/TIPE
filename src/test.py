@@ -1,10 +1,9 @@
-from tools.tipe_tresses import final_alice_and_bob_v2,convert_slt_to_lt
+from tools.tipe_tresses import nbr_brins,boucle_2simp
 from tools.tipe_tresses import EXEMPLE_2,EXEMPLE_1
+from tools.TIPE_interface_graph import tresses_n_brins
 
-
-sa=[[(1,1),(2,1)],[(3,1),(1,-1)],[(2,1)]]
-a=[(2,1),(3,1),(1,-1)]
-sb=[[(2,1),(1,-1)],[(3,-1)],[(1,1),(3,1)]]
-b=[(2,1),(1,-1),(3,-1),(1,1),(3,1)]
-
-print(final_alice_and_bob_v2())
+n1=nbr_brins(EXEMPLE_2)
+tresses_n_brins(EXEMPLE_2,n1)
+m=boucle_2simp(EXEMPLE_2)
+n2=nbr_brins(EXEMPLE_2)
+tresses_n_brins(m,n2)

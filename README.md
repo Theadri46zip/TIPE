@@ -10,9 +10,9 @@
 
 - Optimiser les mots + bcp de fonctions auxiliaires
 
-# A faire:
+-Interface graphique à n_brins
 
-- Diffie Hellman
+- Diffie Hellman v1 et v2
 
 # documentation
 

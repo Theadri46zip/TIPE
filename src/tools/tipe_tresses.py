@@ -14,7 +14,6 @@ Sig=Literal[1,-1]
 Noeud=tuple[int,Literal[1,-1]]
 Tresse=list[Noeud]
 
-
 # sigma1-1, sigma2, sigma1, sigma2
 EXEMPLE_1: Tresse = [
     (1,-1),
