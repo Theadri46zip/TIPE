@@ -334,7 +334,7 @@ def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
 #2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
 #3)Impossible de trouver x avec gamma(x,_)
 
-def negatif(element:int,booleen:bool)->int:
+def oppose(element:int,booleen:bool)->int:
     """
     renvoie element si booleen =False, -element sinon
     """
@@ -356,12 +356,12 @@ def convert_slt_to_lt(element:str)->list[tuple]:
             if carac=="-":
                 negative=True
             else:
-                st.append(negatif(int(carac),negative))
+                st.append(oppose(int(carac),negative))
                 negative=False
         if carac==")":
             l2.append((st[0],st[1]))
             st=[]
-    return l2   
+    return l2
 
 def convert_lslt_to_llt(l:list[str])->list[list[tuple]]:
     """
@@ -378,7 +378,7 @@ def convert_lslt_to_llt(l:list[str])->list[list[tuple]]:
                 if carac=="-":
                     negative=True
                 else:
-                    st.append(negatif(int(carac),negative))
+                    st.append(oppose(int(carac),negative))
                     negative=False
             if carac==")":
                 sl.append((st[0],st[1]))
