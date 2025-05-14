@@ -516,8 +516,11 @@ def final_alice_and_bob_v2():
     a,sa=init_choix_v2()
     print("AU TOUR DE BOB")
     b,sb=init_choix_v2()
+    #sb et sa sont échangés publiquement
+    #a et b restent privés
     a_1=alice_1_v2(a,sb)
     b_1=bob_1_v2(b,sa)
+    #a_1 et b_1 sont échangés publiquement
     a_2=alice_2_v2(a,b_1,sa)
     b_2=bob_2_v2(b,a_1,sb)
     fa=alice_3_v2(a,a_2)
