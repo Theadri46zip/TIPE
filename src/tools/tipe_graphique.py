@@ -1,7 +1,6 @@
 """toolkit pour représentation graphique des tresses"""
 from typing import Literal
 import matplotlib.pyplot as plt
-import logging
 import matplotlib.colors as mcolors
 
 # Création de types pour les tresses, représentation d'Artin
@@ -16,9 +15,11 @@ EXEMPLE_1: Tresse = [
     (2,1)]
 
 def differentes_couleurs(n):
-    """Génère n couleurs distinctes en utilisant l'espace HSV/TSV.
+    """
+    Génère n couleurs distinctes en utilisant l'espace HSV/TSV.
     Les teintes sont réparties uniformément, avec saturation et valeur élevées.
-    Retourne une liste de triplets RGB."""
+    Retourne une liste de triplets RGB.
+    """
     tsv_couleurs = []
     for i in range(n):
         teinte = i / n           #teinte
@@ -27,35 +28,42 @@ def differentes_couleurs(n):
         tsv_couleurs.append((teinte, saturation, valeur))
     return [mcolors.hsv_to_rgb(tsv) for tsv in tsv_couleurs]
 
-def decomposition(T):
-    """Décompose une liste de tuples (a, b) en deux listes distinctes : [a1, a2, ...], [b1, b2, ...]
-    Équivaut à la fonction zip(*L)"""
-    return [a for a, _ in T], [b for _, b in T]
+def decomposition(t):
+    """
+    Décompose une liste de tuples (a, b) en deux listes distinctes : [a1, a2, ...], [b1, b2, ...]
+    Équivaut à la fonction zip(*L)
+    """
+    return [a for a, _ in t], [b for _, b in t]
 
-def index(L, val):
-    """Renvoie l'indice de la première occurrence de val dans la liste L.
-    Équivaut à L.index(val)"""
-    for i in range(len(L)):
-        if L[i] == val:
+def index(l, val):
+    """
+    Renvoie l'indice de la première occurrence de val dans la liste l
+    Équivaut à l.index(val)
+    """
+    for i,e in enumerate(l):
+        if e == val:
             return i
+    return "pas dans la liste"
 
-def tresses_trois_brins(L):
-    """Représente une tresse à 3 brins
-     L : liste de tuples (i, s)
-        i : 1 ou 2 => croisement entre brins i et i+1
-        s : signature => -1 le brin i passe au dessus de i+1 et inversement"""
+def tresses_trois_brins(l):
+    """
+    Représente une tresse à 3 brins
+    l : liste de tuples (i, s)
+    i : 1 ou 2 => croisement entre brins i et i+1
+    s : signature => -1 le brin i passe au dessus de i+1 et inversement
+    """
     nb_brins = 3
     couleurs = ['red', 'green', 'blue']
     ordre_brins = [0, 1, 2]
     ordres_par_etape = [ordre_brins.copy()]
     trajectoires = [[(pos, 0, False)] for pos in range(nb_brins)]
     y = 0
-    if L==[]:
+    if l==[]:
         for pos, brin in enumerate(ordre_brins):
             trajectoires[brin].append((pos, 1, False))
         y = 1
     else:
-        for i, (croisement, _) in enumerate(L):
+        for i, (croisement, _) in enumerate(l):
             n_ordre = ordre_brins.copy()
             temp=n_ordre[croisement]
             n_ordre[croisement]=n_ordre[croisement - 1]
@@ -86,7 +94,7 @@ def tresses_trois_brins(L):
 
             est_croisement = points[j][2]
             if est_croisement:
-                i, s = L[y0]
+                i, s = l[y0]
                 ordre = ordres_par_etape[y0]
                 brin_g = ordre[i - 1]
                 brin_d = ordre[i]
@@ -105,7 +113,7 @@ def tresses_trois_brins(L):
                 else:
                     t.plot([x0, x1], [y0, y1], color=couleur, linewidth=2)
 
-    sigma_labels = [fr'$\sigma_{{{i}}}^{{{s}}}$' for i, s in L]
+    sigma_labels = [fr'$\sigma_{{{i}}}^{{{s}}}$' for i, s in l]
     for label in sigma_labels:
         t.plot([], [], label=label)
 
@@ -119,24 +127,26 @@ def tresses_trois_brins(L):
     t.text(1, -0.9, "Tresse à 3 brins", ha='center', va='top', fontsize=14)
     plt.show()
 
-def tresses_n_brins(L, n):
-    """Représente une tresse à n brins en couleur RGB aléatoire.
-    L : liste de tuples (i, s)
-        i : entre 1 et n-1 => croisement entre brins i et i+1
-        s : signature => -1 si le brin i passe au-dessus de i+1, +1 sinon
-    n : nombre de brins (entier positif)"""
+def tresses_n_brins(l, n):
+    """
+    Représente une tresse à n brins en couleur RGB aléatoire.
+    l : liste de tuples (i, s)
+    i : entre 1 et n-1 => croisement entre brins i et i+1
+    s : signature => -1 si le brin i passe au-dessus de i+1, +1 sinon
+    n : nombre de brins (entier positif)
+    """
     nb_brins = n
     ordre_brins = list(range(nb_brins))
     ordres_par_etape = [ordre_brins.copy()]
     trajectoires = [[(pos, 0, False)] for pos in range(nb_brins)]
     couleurs=differentes_couleurs(nb_brins)
     y = 0
-    if L == []:
+    if l == []:
         for pos, brin in enumerate(ordre_brins):
             trajectoires[brin].append((pos, 1, False))
         y = 1
     else:
-        for i, (croisement, _) in enumerate(L):
+        for i, (croisement, _) in enumerate(l):
             n_ordre = ordre_brins.copy()
             temp=n_ordre[croisement]
             n_ordre[croisement]=n_ordre[croisement-1]
@@ -164,7 +174,7 @@ def tresses_n_brins(L, n):
             y0, y1 = y_p[j], y_p[j+1]
             est_croisement = points[j][2]
             if est_croisement:
-                i, s = L[y0]
+                i, s = l[y0]
                 ordre = ordres_par_etape[y0]
                 brin_g = ordre[i - 1]
                 brin_d = ordre[i]
@@ -185,7 +195,7 @@ def tresses_n_brins(L, n):
             else:
                 t.plot([x0, x1], [y0, y1], color=couleurs[brin],linewidth=2, zorder=2)
 
-    sigma_labels = [fr'$\sigma_{{{i}}}^{{{s}}}$' for i, s in L]
+    sigma_labels = [fr'$\sigma_{{{i}}}^{{{s}}}$' for i, s in l]
     for label in sigma_labels:
         t.plot([], [], label=label)
 
