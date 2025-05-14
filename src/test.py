@@ -2,6 +2,7 @@ from tools.tipe_tresses import init_choix_v2,alice_1_v2,alice_2_v2,alice_3_v2,bo
 from tools.tipe_tresses import EXEMPLE_2,EXEMPLE_1
 from tools.tipe_tresses import gamma,alpha,beta,boucle_2simp,position_gen
 
+
 sa=[[(1,1),(2,1)], [(3,1),(1,-1)], [(2,1)]]
 a=[(2,1),(3,1),(1,-1)]
 sb=[[(2,1),(1,-1)], [(3,-1)], [(1,1),(3,1)]]
