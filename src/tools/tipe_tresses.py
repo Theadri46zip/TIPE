@@ -334,6 +334,58 @@ def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
 #2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
 #3)Impossible de trouver x avec gamma(x,_)
 
+def negatif(element:int,booleen:bool)->int:
+    """
+    renvoie element si booleen =False, -element sinon
+    """
+    if booleen:
+        return -1*element
+    return element
+
+def convert_slt_to_lt(element:str)->list[tuple]:
+    """
+    transforme une 
+    liste de tuples de forme str
+    en liste de liste de tuples
+    """
+    l2=[]
+    st=[]
+    negative=False
+    for carac in element:
+        if carac not in ["[","]","(",")",","," "]:
+            if carac=="-":
+                negative=True
+            else:
+                st.append(negatif(int(carac),negative))
+                negative=False
+        if carac==")":
+            l2.append((st[0],st[1]))
+            st=[]
+    return l2   
+
+def convert_lslt_to_llt(l:list[str])->list[list[tuple]]:
+    """
+    transforme une liste de liste de tuples de forme str
+    en liste de liste de tuples
+    """
+    l2=[]
+    for element in l:
+        sl=[]
+        st=[]
+        negative=False
+        for carac in element:
+            if carac not in ["[","]","(",")",","," "]:
+                if carac=="-":
+                    negative=True
+                else:
+                    st.append(negatif(int(carac),negative))
+                    negative=False
+            if carac==")":
+                sl.append((st[0],st[1]))
+                st=[]
+        l2.append(sl)
+    return l2
+
 def init_choix_v2() -> tuple:
     """
     Initialisation de la configuration,
@@ -347,8 +399,10 @@ def init_choix_v2() -> tuple:
         choix=input("Entrez une tresse génératrice du monoide, \n'exit' si fini :")
         if choix != "exit":
             l.append(choix)
+    l=convert_lslt_to_llt(l)
     print(l)
-    a=Tresse(input("choisissez une clé(Tresse) composée d'éléments ci dessus:"))
+    a=input("choisissez une clé(Tresse) composée d'éléments ci dessus:")
+    a=convert_slt_to_lt(a)
     return (a,l)
 
 def gamma(x:Tresse,y:Tresse)->Tresse:
@@ -452,3 +506,22 @@ def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
     """
     res=beta(b,gam)
     return res
+
+def final_alice_and_bob_v2():
+    """
+    alice et bob entrent leur clé et on execute le processus 
+    qui permet de trouver la clé commune
+    """
+    print("AU TOUR D'ALICE")
+    a,sa=init_choix_v2()
+    print("AU TOUR DE BOB")
+    b,sb=init_choix_v2()
+    a_1=alice_1_v2(a,sb)
+    b_1=bob_1_v2(b,sa)
+    a_2=alice_2_v2(a,b_1,sa)
+    b_2=bob_2_v2(b,a_1,sb)
+    fa=alice_3_v2(a,a_2)
+    fb=bob_3_v2(b,b_2)
+    fas=boucle_2simp(fa)
+    fbs=boucle_2simp(fb)
+    return fas,fbs
