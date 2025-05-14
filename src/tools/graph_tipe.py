@@ -110,9 +110,3 @@ def tresses_n_brins(L: Tresse):
     couleurs = differentes_couleurs(nbr_brins(L))
     trajectoires,_ = trajectoires_croisements(L)
     affichage_tresse(trajectoires, couleurs, L)
-    
-    
-
-exemple = [(6, 1),(1, 1),(2,1),(3,-1),(4,-1),(6,1),(5,-1),(7,1),(5,1),(7,-1),(1,-1)]
-ex=[]
-exemple1=[(1,1),(2,1),(1,-1),(1,1),(2,-1),(1,1),(2,1),(1,-1),(1,1),(2,-1)]
