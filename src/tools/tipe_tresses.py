@@ -385,7 +385,7 @@ def convert_lslt_to_llt(l:list[str])->list[list[tuple]]:
         l2.append(sl)
     return l2
 
-def init_choix_v2() -> tuple:
+def init_choix_v2() -> tuple[list[tuple],list[list[tuple]]]:
     """
     Initialisation de la configuration,
     on crée le monoide choisi par un des deux,
@@ -506,7 +506,7 @@ def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
     res=beta(b,gam)
     return res
 
-def final_alice_and_bob_v2():
+def final_alice_and_bob_v2()->tuple[Tresse,Tresse]:
     """
     alice et bob entrent leur clé et on execute le processus 
     qui permet de trouver la clé commune
