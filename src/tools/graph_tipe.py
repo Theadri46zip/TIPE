@@ -36,26 +36,26 @@ def nbr_brins(t: list) -> int:
     return max(list(t[i][0] for i in range(len(t)))) + 1
 
 def trajectoires_croisements(L):
-    """renvoie la liste des trajectoires associées aux croisement et la hauteur"""
+    """Renvoie la liste des trajectoires associées aux croisements et la hauteur."""
     nb_brins = nbr_brins(L)
     ordre_brins = list(range(nb_brins))
     trajectoires = [[(pos, 0, False)] for pos in range(nb_brins)]
     y = 0
-    if L==[]:
+    if L == []:
         for pos, brin in enumerate(ordre_brins):
             trajectoires[brin].append((pos, 1, False))
         return trajectoires, 1
-
-    for croisement, signe in L:
+    for croisement, s in L:
         n_ordre = ordre_brins.copy()
         n_ordre[croisement - 1], n_ordre[croisement] = n_ordre[croisement], n_ordre[croisement - 1]
         brin_g = ordre_brins[croisement - 1]
         brin_d = ordre_brins[croisement]
-        brin_dessous = brin_g if signe == 1 else brin_d
+        brin_dessous = brin_g if s == 1 else brin_d
+        trajectoires[brin_dessous][-1] = (trajectoires[brin_dessous][-1][0], 
+                                          trajectoires[brin_dessous][-1][1], 
+                                          True)
         for brin in ordre_brins:
             n_pos = n_ordre.index(brin)
-            est_croisement = (brin == brin_dessous)
-            trajectoires[brin][-1] = (trajectoires[brin][-1][0], trajectoires[brin][-1][1], est_croisement)
             trajectoires[brin].append((n_pos, y + 1, False))
         ordre_brins = n_ordre
         y += 1
