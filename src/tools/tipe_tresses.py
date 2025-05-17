@@ -515,9 +515,6 @@ def final_alice_and_bob_v2()->tuple[Tresse,Tresse]:
     a,sa=init_choix_v2()
     print("AU TOUR DE BOB")
     b,sb=init_choix_v2()
-    #on simplifie si possible a et b
-    #a=boucle_2simp(a)
-    #b=boucle_2simp(b)
     #sb et sa sont échangés publiquement
     #a et b restent privés
     a_1=alice_1_v2(a,sb)
