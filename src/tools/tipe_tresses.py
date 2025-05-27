@@ -1,12 +1,7 @@
-"""Toolkit matriciel pour codage de tresses."""
+"""Codage de tresses et cryptographie"""
 from copy import deepcopy
 import logging
 from typing import Literal
-
-FORMAT = '%(asctime)s - %(funcName)s - %(lineno)d - %(levelname)s - %(message)s'
-logging.basicConfig(format=FORMAT)
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.DEBUG)
 
 # Création de types pour les tresses, représentation d'Artin
 
