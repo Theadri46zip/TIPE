@@ -58,7 +58,7 @@ def mot2mat(t:Tresse)->None:
     """
     n=nbr_brins(t)
     m0=matcar_zero(n)   #Etat 0 matrice nulle
-    l_mat=[m0]           # On ajoute le matrice 0 a la liste des matrices
+    l_mat=[m0]           # On ajoute la matrice 0 a la liste des matrices
     nb_etat_courant=0
     #la liste des noeuds dans l'ordre de priorité gauche -> droite
     l_etats=[
