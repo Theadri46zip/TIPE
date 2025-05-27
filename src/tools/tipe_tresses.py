@@ -254,57 +254,7 @@ def inverse(t:Tresse) -> Tresse:
         t3.append((t2[i][0],-1*t2[i][1]))
     return t3
 
-#diffie hellman v1
-#avec seulement la concatenation
-
-def init_choix_v1() -> tuple:
-    """
-    Initialisation de la configuration, 
-    mais on controle ici alice et bob
-    """
-    a=Tresse(input("clé d'Alice:"))
-    b=Tresse(input("clé de Bob"))
-    p=Tresse(input("clé commune"))
-    return (a,b,p)
-
-def alice_1_v1(a:Tresse,p:Tresse)->Tresse:
-    """
-    alice crée une partie de la clé,
-    on la transmettra a bob
-    """
-    p_a=a+p+inverse(p)
-    return p_a
-
-def bob_1_v1(b:Tresse,p:Tresse)->Tresse:
-    """
-    bob crée l'autre partie de la clé,
-    on la transmettra a alice
-    """
-    p_b=b+p+inverse(b)
-    return p_b
-
-def alice_2_v1(a:Tresse,pb:Tresse)->Tresse:
-    """
-    bob a transmis sa partie de la clé
-    on crée la clé finale
-    """
-    p_f=a+pb+inverse(a)
-    return p_f
-
-def bob_2_v1(b:Tresse,pa:Tresse)->Tresse:
-    """
-    alice a transmis sa partie de la clé
-    on crée la clé finale
-    """
-    p_f=b+pa+inverse(b)
-    return p_f
-
-#diffie hellman v2
-#avec conjugaison
-#il faut vérifier
-#1) Gamma linéaire par rapport a sa deuxieme variable
-#2)alpha(x,gamma(y,x))=beta(y,gamma(x,y))
-#3)Impossible de trouver x avec gamma(x,_)
+#diffie hellman 
 
 def oppose(element:int,booleen:bool)->int:
     """
@@ -358,7 +308,7 @@ def convert_lslt_to_llt(l:list[str])->list[list[tuple]]:
         l2.append(sl)
     return l2
 
-def init_choix_v2() -> tuple[list[tuple],list[list[tuple]]]:
+def init_choix() -> tuple[list[tuple],list[list[tuple]]]:
     """
     Initialisation de la configuration,
     on crée le monoide choisi par un des deux,
@@ -398,7 +348,7 @@ def beta(u:Tresse,v:Tresse)->Tresse:
     res=inverse(v) + u
     return res
 
-def alice_1_v2(a:Tresse,l_b:list[Tresse])->list[Tresse]:
+def alice_1(a:Tresse,l_b:list[Tresse])->list[Tresse]:
     """
     alice renvoie la liste des gamma(a,tk)
     les tk sont les generateurs du monoide de bob, 
@@ -411,7 +361,7 @@ def alice_1_v2(a:Tresse,l_b:list[Tresse])->list[Tresse]:
         l2.append(boucle_2simp(tresse_temp))
     return l2
 
-def bob_1_v2(b:Tresse,l_a:list[Tresse])->list[Tresse]:
+def bob_1(b:Tresse,l_a:list[Tresse])->list[Tresse]:
     """
     bob renvoie la liste des gamma(b,sk)
     les sk sont les generateurs du monoide de alice, 
@@ -441,7 +391,7 @@ def position_gen(t:Tresse,l_gen:list[Tresse])->int:
         l_ind.append(l_gen.index(l2))
     return l_ind
 
-def alice_2_v2(a:Tresse,l_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
+def alice_2(a:Tresse,l_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
     """
     alice calcule gamma(b,a) a partir
     des gamma(b,sk) transmis par bob, contenus dans l_gamma
@@ -455,7 +405,7 @@ def alice_2_v2(a:Tresse,l_gamma:list[Tresse],l_a:list[Tresse])->Tresse:
         res+= l_gamma[ind]
     return res
 
-def bob_2_v2(b:Tresse,l_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
+def bob_2(b:Tresse,l_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
     """
     bob calcule gamma(a,b) a partir
     des gamma(tk,b) transmis par bob, contenus dans l_gamma
@@ -469,7 +419,7 @@ def bob_2_v2(b:Tresse,l_gamma:list[Tresse],l_b:list[Tresse])->Tresse:
         res+= l_gamma[ind]
     return res
 
-def alice_3_v2(a:Tresse,gam:Tresse)->Tresse:
+def alice_3(a:Tresse,gam:Tresse)->Tresse:
     """
     On calcule alpha(a,gamma(b,a))
     """
@@ -477,7 +427,7 @@ def alice_3_v2(a:Tresse,gam:Tresse)->Tresse:
     res=boucle_2simp(res)
     return res
 
-def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
+def bob_3(b:Tresse,gam:Tresse)->Tresse:
     """
     On calcule beta(b,gamma(a,b))
     """
@@ -485,22 +435,22 @@ def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
     res=boucle_2simp(res)
     return res
 
-def final_alice_and_bob_v2()->tuple[Tresse,Tresse]:
+def final_alice_and_bob()->tuple[Tresse,Tresse]:
     """
     alice et bob entrent leur clé et on execute le processus 
     qui permet de trouver la clé commune
     """
     print("AU TOUR D'ALICE")
-    a,sa=init_choix_v2()
+    a,sa=init_choix()
     print("AU TOUR DE BOB")
-    b,sb=init_choix_v2()
+    b,sb=init_choix()
     #sb et sa sont échangés publiquement
     #a et b restent privés
-    a_1=alice_1_v2(a,sb)
-    b_1=bob_1_v2(b,sa)
+    a_1=alice_1(a,sb)
+    b_1=bob_1(b,sa)
     #a_1 et b_1 sont échangés publiquement
-    a_2=alice_2_v2(a,b_1,sa)
-    b_2=bob_2_v2(b,a_1,sb)
-    fa=alice_3_v2(a,a_2)
-    fb=bob_3_v2(b,b_2)
+    a_2=alice_2(a,b_1,sa)
+    b_2=bob_2(b,a_1,sb)
+    fa=alice_3(a,a_2)
+    fb=bob_3(b,b_2)
     return fa,fb
