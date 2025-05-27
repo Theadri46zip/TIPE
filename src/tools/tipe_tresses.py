@@ -53,9 +53,7 @@ def ajout2mat(m1:list[list], m2:list[list])->list[list]:
 
 
 def mot2mat(t:Tresse)->None:
-    """Passage d'un mot à une série de matrices.
-    ne marche que si il y a 3 brins ou plus.
-    """
+    """Passage d'un mot à une série de matrices """
     n=nbr_brins(t)
     m0=matcar_zero(n)   #Etat 0 matrice nulle
     l_mat=[m0]           # On ajoute la matrice 0 a la liste des matrices
