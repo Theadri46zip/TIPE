@@ -371,7 +371,7 @@ def bob_1(b:Tresse,l_a:list[Tresse])->list[Tresse]:
     tresse_temp=[]
     for noeud in l_a:
         tresse_temp=gamma(b,noeud)
-        l2.append(gamma(b,noeud))
+        l2.append(boucle_2simp(tresse_temp))
     return l2
 
 def position_gen(t:Tresse,l_gen:list[Tresse])->int:
