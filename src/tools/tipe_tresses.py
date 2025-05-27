@@ -1,6 +1,5 @@
 """Codage de tresses et cryptographie"""
 from copy import deepcopy
-import logging
 from typing import Literal
 
 # Création de types pour les tresses, représentation d'Artin
