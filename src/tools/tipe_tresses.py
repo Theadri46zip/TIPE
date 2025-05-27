@@ -97,10 +97,7 @@ def mot2mat(t:Tresse)->None:
     print("état final :")
     print_mat(mf)
 
-#3 propriétés :
-#- [ i,1] suivi de [i,-1] se simplifie en l'inaction
-#- [i,1] suivi de [j,1] vaut [j,1] suivi de [i,1] si en valeur abs i-j >=2
-#- [i,1] [j,1] [i,1] vaut [j,1] [i,1] [j,1] si en valeur abs i-j =1
+#REDUCTION
 
 def est_poignee(t:Tresse)->bool:
     """
@@ -442,7 +439,7 @@ def bob_1_v2(b:Tresse,l_a:list[Tresse])->list[Tresse]:
     tresse_temp=[]
     for noeud in l_a:
         tresse_temp=gamma(b,noeud)
-        l2.append(boucle_2simp(tresse_temp))
+        l2.append(gamma(b,noeud))
     return l2
 
 def position_gen(t:Tresse,l_gen:list[Tresse])->int:
