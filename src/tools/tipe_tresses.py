@@ -254,12 +254,6 @@ def inverse(t:Tresse) -> Tresse:
         t3.append((t2[i][0],-1*t2[i][1]))
     return t3
 
-def addition(t1:Tresse,t2:Tresse)->Tresse:
-    """
-    compose deux tresses, les mets bout à bout
-    """
-    return t1+t2
-
 #diffie hellman v1
 #avec seulement la concatenation
 
