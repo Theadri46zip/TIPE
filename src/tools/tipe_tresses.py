@@ -135,16 +135,6 @@ def extract2poignee(t:Tresse,g:Noeud)->Tresse:
             place+=1
     return l
 
-def num_generateurs(t:Tresse,g:Noeud)->int:
-    """
-    renvoie le nombre de générateurs g et inverses g**-1 dans t
-    """
-    compteur=0
-    inv=(g[0],-g[1])
-    for sigma in t:
-        if sigma in (g ,inv):
-            compteur+=1
-    return compteur
 
 def reduction_poignee(t:Tresse)->Tresse:
     """
