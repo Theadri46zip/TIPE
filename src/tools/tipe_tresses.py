@@ -426,8 +426,10 @@ def alice_1_v2(a:Tresse,l_b:list[Tresse])->list[Tresse]:
     contenus dans l_b
     """
     l2=[]
+    tresse_temp=[]
     for noeud in l_b:
-        l2.append(gamma(a,noeud))
+        tresse_temp=gamma(a,noeud)
+        l2.append(boucle_2simp(tresse_temp))
     return l2
 
 def bob_1_v2(b:Tresse,l_a:list[Tresse])->list[Tresse]:
@@ -437,8 +439,10 @@ def bob_1_v2(b:Tresse,l_a:list[Tresse])->list[Tresse]:
     contenus dans l_a
     """
     l2=[]
+    tresse_temp=[]
     for noeud in l_a:
-        l2.append(gamma(b,noeud))
+        tresse_temp=gamma(b,noeud)
+        l2.append(boucle_2simp(tresse_temp))
     return l2
 
 def position_gen(t:Tresse,l_gen:list[Tresse])->int:
@@ -491,6 +495,7 @@ def alice_3_v2(a:Tresse,gam:Tresse)->Tresse:
     On calcule alpha(a,gamma(b,a))
     """
     res=alpha(a,gam)
+    res=boucle_2simp(res)
     return res
 
 def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
@@ -498,6 +503,7 @@ def bob_3_v2(b:Tresse,gam:Tresse)->Tresse:
     On calcule beta(b,gamma(a,b))
     """
     res=beta(b,gam)
+    res=boucle_2simp(res)
     return res
 
 def final_alice_and_bob_v2()->tuple[Tresse,Tresse]:
@@ -518,6 +524,4 @@ def final_alice_and_bob_v2()->tuple[Tresse,Tresse]:
     b_2=bob_2_v2(b,a_1,sb)
     fa=alice_3_v2(a,a_2)
     fb=bob_3_v2(b,b_2)
-    fas=boucle_2simp(fa)
-    fbs=boucle_2simp(fb)
-    return fas,fbs
+    return fa,fb
